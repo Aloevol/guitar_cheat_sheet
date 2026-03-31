@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --bg:      #0a0806;
+    --bg2:     #0d0b08;
+    --bg3:     #111009;
+    --surface: #141210;
+    --card:    #181510;
+    --card2:   #1a1712;
+
+    --border:  rgba(255,255,255,.06);
+    --border2: rgba(255,255,255,.1);
+    --border3: rgba(255,255,255,.16);
+
+    --gold:    #c9a84c;
+    --gold-l:  #f0c93a;
+    --gold-xl: #f5d878;
+    --amber:   #d4842a;
+
+    --scales:       #f0c93a;
+    --modes:        #5fd3c8;
+    --chords:       #6eb4ff;
+    --progressions: #b987f5;
+    --techniques:   #ff8c42;
+    --theory:       #4dd98a;
+    --tunings:      #ff6b8a;
+
+    --cream:  #f5edda;
+    --text:   rgba(255,255,255,.8);
+    --muted:  rgba(255,255,255,.45);
+    --muted2: rgba(255,255,255,.25);
+    --muted3: rgba(255,255,255,.14);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Lora', Georgia, serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::placeholder { color: var(--muted3); }
+  :focus        { outline: none; }
+  button        { cursor: pointer; font-family: inherit; }
+  input         { font-family: inherit; }
+
+  ::-webkit-scrollbar       { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
+
+  ::selection { background: rgba(240,201,58,.2); color: var(--cream); }
+}
+
+@layer components {
+  .cat-badge {
+    @apply inline-flex items-center font-mono text-[0.58rem] font-bold uppercase tracking-widest rounded px-[7px] py-[2px] border;
+  }
+
+  .section-label {
+    @apply flex items-center gap-2 mb-2;
+  }
+
+  .note-pill {
+    @apply inline-flex items-center justify-center font-mono text-[0.82rem] font-semibold px-[11px] py-[5px] rounded-md border-[1.5px] min-w-[32px] text-center leading-none tracking-[0.02em];
+  }
+
+  .key-btn {
+    @apply font-mono text-[0.65rem] font-bold px-2 py-[5px] rounded border-[1.5px] min-w-[36px] cursor-pointer transition-all duration-100;
+  }
+
+  .quick-pill {
+    @apply font-mono text-[0.6rem] bg-white/[0.03] border border-white/[0.08] rounded-[14px] px-[10px] py-1 text-white/30 cursor-pointer transition-all duration-150 tracking-[0.02em];
+  }
+}
