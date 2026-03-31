@@ -19,7 +19,7 @@ function normalize(str: string): string {
 export default function Home() {
   const [query, setQuery] = useState('')
   const [cat, setCat] = useState('all')
-  const [openId, setOpenId] = useState<string | null>(null)
+  const [openIds, setOpenIds] = useState<Set<string>>(new Set())
 
   const isSearching = query.trim() !== '' || cat !== 'all'
 
@@ -55,38 +55,36 @@ export default function Home() {
   )
 
   function handleToggle(id: string) {
-    setOpenId(prev => prev === id ? null : id)
+    setOpenIds(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
   }
 
   function handleCatSelect(c: string) {
     setCat(c)
     setQuery('')
-    setOpenId(null)
+    setOpenIds(new Set())
   }
 
   function handleClear() {
     setQuery('')
     setCat('all')
-    setOpenId(null)
+    setOpenIds(new Set())
   }
 
   function handleQuick(q: string) {
     setQuery(q)
     setCat('all')
-    setOpenId(null)
-  }
-
-  function handleHeroCatClick(c: string) {
-    setCat(prev => prev === c ? 'all' : c)
-    setQuery('')
-    setOpenId(null)
+    setOpenIds(new Set())
   }
 
   return (
     <main style={{ minHeight: '100vh', background: '#0d0b08' }}>
       <SeoContent />
 
-      <Hero cat={cat} onCatClick={handleHeroCatClick} />
+      <Hero />
 
       <div style={{ padding: '32px 0 16px' }}>
         <SearchBar
@@ -99,7 +97,7 @@ export default function Home() {
         <CategoryFilter
           categories={CATEGORIES}
           active={cat}
-          onChange={c => { setCat(c); setOpenId(null) }}
+          onChange={c => { setCat(c); setOpenIds(new Set()) }}
           pal={PAL}
         />
       </div>
@@ -110,7 +108,7 @@ export default function Home() {
             items={filtered}
             query={query}
             cat={cat}
-            openId={openId}
+            openIds={openIds}
             onToggle={handleToggle}
             onClear={handleClear}
             pal={PAL}
@@ -119,7 +117,7 @@ export default function Home() {
           <CategoryGrid
             bycat={bycat}
             featured={featured}
-            openId={openId}
+            openIds={openIds}
             onToggle={handleToggle}
             onCatSelect={handleCatSelect}
           />

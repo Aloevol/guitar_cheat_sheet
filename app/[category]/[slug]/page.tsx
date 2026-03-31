@@ -8,7 +8,7 @@ import type { CategorySlug, GuitarEntry } from '../../types'
 const SITE_URL = 'https://guitarcheatsheet.com'
 
 interface Props {
-  params: { category: string; slug: string }
+  params: Promise<{ category: string; slug: string }>
 }
 
 export async function generateStaticParams() {
@@ -19,7 +19,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const entry = DATA.find(d => d.category === params.category && d.id === params.slug)
+  const { category, slug: paramSlug } = await params
+  const entry = DATA.find(d => d.category === category && d.id === paramSlug)
   if (!entry) return {}
 
   const cat = CATEGORY_CONFIG[entry.category as CategorySlug]
@@ -98,8 +99,9 @@ function KeyTable({ entry }: { entry: GuitarEntry }) {
   )
 }
 
-export default function EntryPage({ params }: Props) {
-  const entry = DATA.find(d => d.category === params.category && d.id === params.slug)
+export default async function EntryPage({ params }: Props) {
+  const { category, slug: paramSlug } = await params
+  const entry = DATA.find(d => d.category === category && d.id === paramSlug)
   if (!entry) notFound()
 
   const cat = CATEGORY_CONFIG[entry.category as CategorySlug]

@@ -8,7 +8,7 @@ import type { CategorySlug } from '../types'
 const SITE_URL = 'https://guitarcheatsheet.com'
 
 interface Props {
-  params: { category: string }
+  params: Promise<{ category: string }>
 }
 
 export async function generateStaticParams() {
@@ -16,22 +16,24 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  if (!isCategorySlug(params.category)) return {}
-  const cat = CATEGORY_CONFIG[params.category]
+  const { category } = await params
+  if (!isCategorySlug(category)) return {}
+  const cat = CATEGORY_CONFIG[category]
   const title = `Guitar ${cat.label} — All ${cat.label} in Every Key`
   const description = `Complete guitar ${cat.label.toLowerCase()} reference. ${cat.desc}. Every item shown in all 12 keys with formulas, notes, and chord families. Free for all levels.`
   return {
     title,
     description,
-    openGraph: { title, description, url: `${SITE_URL}/${params.category}` },
-    alternates: { canonical: `${SITE_URL}/${params.category}` },
+    openGraph: { title, description, url: `${SITE_URL}/${category}` },
+    alternates: { canonical: `${SITE_URL}/${category}` },
   }
 }
 
-export default function CategoryPage({ params }: Props) {
-  if (!isCategorySlug(params.category)) notFound()
+export default async function CategoryPage({ params }: Props) {
+  const { category } = await params
+  if (!isCategorySlug(category)) notFound()
 
-  const slug = params.category as CategorySlug
+  const slug = category as CategorySlug
   const cat = CATEGORY_CONFIG[slug]
   const entries = DATA.filter(d => d.category === slug)
 

@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="gold" x1="20%" y1="10%" x2="75%" y2="90%">
+      <stop offset="0%"   stop-color="#f5d870"/>
+      <stop offset="45%"  stop-color="#c9a84c"/>
+      <stop offset="100%" stop-color="#8a6820"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="50%" cy="35%" r="68%">
+      <stop offset="0%"   stop-color="#1c1910"/>
+      <stop offset="100%" stop-color="#070503"/>
+    </radialGradient>
+    <radialGradient id="shine" cx="33%" cy="28%" r="52%">
+      <stop offset="0%"   stop-color="#fff9e8" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#fff9e8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="50" fill="url(#bg)"/>
+  <circle cx="50" cy="50" r="47.5" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.4"/>
+
+  <!-- NECK -->
+  <path d="M 46 35 L 46 13 C 46 11, 47.5 10, 50 10 C 52.5 10, 54 11, 54 13 L 54 35 Z"
+        fill="url(#gold)"/>
+  <line x1="47" y1="13" x2="47" y2="35" stroke="#f5d870" stroke-width="0.6" opacity="0.25"/>
+  <!-- Fret lines -->
+  <rect x="46" y="16"   width="8" height="0.7" fill="#080503" opacity="0.45" rx="0.2"/>
+  <rect x="46" y="20.5" width="8" height="0.7" fill="#080503" opacity="0.45" rx="0.2"/>
+  <rect x="46" y="25"   width="8" height="0.7" fill="#080503" opacity="0.45" rx="0.2"/>
+  <rect x="46" y="30"   width="8" height="0.7" fill="#080503" opacity="0.45" rx="0.2"/>
+  <!-- Dot markers (3rd & 5th fret) -->
+  <circle cx="50" cy="22.7" r="1"   fill="#080503" opacity="0.35"/>
+  <circle cx="50" cy="27.4" r="1"   fill="#080503" opacity="0.35"/>
+
+  <!-- HEADSTOCK -->
+  <path d="M 46 13 L 44 13 C 41 13, 41.5 8, 42 5 C 42.5 2, 46 1, 50 1
+           C 54 1, 57.5 2, 58 5 C 58.5 8, 59 13, 56 13 L 54 13 Z"
+        fill="url(#gold)"/>
+  <path d="M 46 13 C 43.5 12, 42.5 9, 42.8 5.5 C 43 3, 46.5 1.8, 50 1.8"
+        fill="none" stroke="#f5d870" stroke-width="0.7" opacity="0.4"/>
+
+  <!-- Tuning pegs — left 3 -->
+  <line x1="44" y1="4"  x2="39.5" y2="4"  stroke="#c9a84c" stroke-width="1.2"/>
+  <line x1="44" y1="8"  x2="39.5" y2="8"  stroke="#c9a84c" stroke-width="1.2"/>
+  <line x1="44" y1="12" x2="39.5" y2="12" stroke="#c9a84c" stroke-width="1.2"/>
+  <circle cx="39" cy="4"  r="2.3" fill="#c9a84c"/>
+  <circle cx="39" cy="8"  r="2.3" fill="#c9a84c"/>
+  <circle cx="39" cy="12" r="2.3" fill="#c9a84c"/>
+  <circle cx="39" cy="4"  r="1.0" fill="#080503" opacity="0.65"/>
+  <circle cx="39" cy="8"  r="1.0" fill="#080503" opacity="0.65"/>
+  <circle cx="39" cy="12" r="1.0" fill="#080503" opacity="0.65"/>
+
+  <!-- Tuning pegs — right 3 -->
+  <line x1="56" y1="4"  x2="60.5" y2="4"  stroke="#c9a84c" stroke-width="1.2"/>
+  <line x1="56" y1="8"  x2="60.5" y2="8"  stroke="#c9a84c" stroke-width="1.2"/>
+  <line x1="56" y1="12" x2="60.5" y2="12" stroke="#c9a84c" stroke-width="1.2"/>
+  <circle cx="61" cy="4"  r="2.3" fill="#c9a84c"/>
+  <circle cx="61" cy="8"  r="2.3" fill="#c9a84c"/>
+  <circle cx="61" cy="12" r="2.3" fill="#c9a84c"/>
+  <circle cx="61" cy="4"  r="1.0" fill="#080503" opacity="0.65"/>
+  <circle cx="61" cy="8"  r="1.0" fill="#080503" opacity="0.65"/>
+  <circle cx="61" cy="12" r="1.0" fill="#080503" opacity="0.65"/>
+
+  <!-- NUT -->
+  <rect x="45.5" y="34" width="9" height="1.5" fill="#080503" rx="0.4"/>
+
+  <!-- GUITAR BODY -->
+  <!-- Upper bout max ~34 wide at y≈47 · Waist ~24 at y≈64 · Lower bout max ~44 at y≈79 -->
+  <path d="
+    M 50 35
+    C 60 35, 68 41, 68 50
+    C 68 58, 64 63, 62 66
+    C 62 69, 72 74, 72 81
+    C 72 92, 62 98, 50 98
+    C 38 98, 28 92, 28 81
+    C 28 74, 38 69, 38 66
+    C 36 63, 32 58, 32 50
+    C 32 41, 40 35, 50 35
+    Z
+  " fill="url(#gold)"/>
+
+  <!-- Body shine -->
+  <path d="
+    M 50 35
+    C 60 35, 68 41, 68 50
+    C 68 58, 64 63, 62 66
+    C 62 69, 72 74, 72 81
+    C 72 92, 62 98, 50 98
+    C 38 98, 28 92, 28 81
+    C 28 74, 38 69, 38 66
+    C 36 63, 32 58, 32 50
+    C 32 41, 40 35, 50 35
+    Z
+  " fill="url(#shine)"/>
+
+  <!-- Left edge sheen -->
+  <path d="M 39 40 C 32.5 47, 32 56, 34.5 63"
+        fill="none" stroke="#f5d870" stroke-width="1.8" stroke-linecap="round" opacity="0.28"/>
+
+  <!-- SOUND HOLE -->
+  <circle cx="50" cy="73" r="10.5" fill="#080503"/>
+  <circle cx="50" cy="73" r="8.8"  fill="none" stroke="#c9a84c" stroke-width="1.3" opacity="0.7"/>
+  <circle cx="50" cy="73" r="6.5"  fill="none" stroke="#c9a84c" stroke-width="0.4" opacity="0.3"/>
+
+  <!-- BRIDGE -->
+  <path d="M 43 87 C 43 85, 45 84.5, 50 84.5 C 55 84.5, 57 85, 57 87
+           L 57 89 C 57 91, 55 91.5, 50 91.5 C 45 91.5, 43 91, 43 89 Z"
+        fill="#080503"/>
+  <rect x="43.5" y="87" width="13" height="1" fill="#0f0c07" rx="0.3"/>
+
+  <!-- STRINGS (6, barely visible) -->
+  <line x1="47.0" y1="89.5" x2="47.2" y2="13" stroke="#080503" stroke-width="0.4" opacity="0.35"/>
+  <line x1="48.2" y1="89.5" x2="48.4" y2="13" stroke="#080503" stroke-width="0.4" opacity="0.35"/>
+  <line x1="49.4" y1="89.5" x2="49.6" y2="13" stroke="#080503" stroke-width="0.4" opacity="0.35"/>
+  <line x1="50.6" y1="89.5" x2="50.4" y2="13" stroke="#080503" stroke-width="0.4" opacity="0.35"/>
+  <line x1="51.8" y1="89.5" x2="51.6" y2="13" stroke="#080503" stroke-width="0.4" opacity="0.35"/>
+  <line x1="53.0" y1="89.5" x2="52.8" y2="13" stroke="#080503" stroke-width="0.4" opacity="0.35"/>
+
+  <!-- PICKGUARD (subtle) -->
+  <path d="M 58 67 C 63 71, 64 78, 62 83 C 65 80, 66 73, 62 67 Z"
+        fill="#080503" opacity="0.18"/>
+</svg>

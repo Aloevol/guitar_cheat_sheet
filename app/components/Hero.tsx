@@ -1,17 +1,7 @@
 'use client'
-import { PAL, CATEGORIES, DATA } from '../data/guitarData'
-import type { CategorySlug } from '../types'
+import { DATA } from '../data/guitarData'
 
-interface HeroProps {
-  cat: string
-  onCatClick: (c: string) => void
-}
-
-export default function Hero({ cat, onCatClick }: HeroProps) {
-  const bycat: Record<string, number> = {}
-  CATEGORIES.filter(c => c !== 'all').forEach(c => {
-    bycat[c] = DATA.filter(d => d.category === c).length
-  })
+export default function Hero() {
   const total = DATA.length
 
   return (
@@ -93,55 +83,6 @@ export default function Hero({ cat, onCatClick }: HeroProps) {
       }}>
         <span style={{ fontFamily: "'Space Mono', monospace", fontSize: '.65rem', fontWeight: 700, color: '#c9a84c' }}>{total}</span>
         <span style={{ fontFamily: "'Space Mono', monospace", fontSize: '.6rem', color: 'rgba(201,168,76,.5)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>topics · 12 keys each · all genres</span>
-      </div>
-
-      <div style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: 6,
-        justifyContent: 'center',
-        marginBottom: 36,
-      }}>
-        {CATEGORIES.filter(c => c !== 'all').map(c => {
-          const p = PAL[c as CategorySlug]
-          const count = bycat[c] || 0
-          const isActive = cat === c
-          return (
-            <button
-              key={c}
-              onClick={() => onCatClick(c)}
-              style={{
-                fontFamily: "'Space Mono', monospace",
-                fontSize: '.62rem',
-                fontWeight: 700,
-                padding: '6px 12px',
-                borderRadius: 20,
-                border: isActive ? `1px solid ${p.br}` : '1px solid rgba(255,255,255,.07)',
-                background: isActive ? p.b : 'rgba(255,255,255,.03)',
-                color: isActive ? p.a : 'rgba(255,255,255,.25)',
-                cursor: 'pointer',
-                transition: 'all .15s',
-                letterSpacing: '0.05em',
-              }}
-              onMouseEnter={e => {
-                if (!isActive) {
-                  e.currentTarget.style.borderColor = p.br
-                  e.currentTarget.style.color = p.a
-                  e.currentTarget.style.background = p.b
-                }
-              }}
-              onMouseLeave={e => {
-                if (!isActive) {
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,.07)'
-                  e.currentTarget.style.color = 'rgba(255,255,255,.25)'
-                  e.currentTarget.style.background = 'rgba(255,255,255,.03)'
-                }
-              }}
-            >
-              <span style={{ opacity: .6, marginRight: 4 }}>{count}</span>{p.label}
-            </button>
-          )
-        })}
       </div>
 
       <div style={{

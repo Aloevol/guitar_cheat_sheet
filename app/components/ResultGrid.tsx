@@ -6,13 +6,13 @@ interface ResultGridProps {
   items: GuitarEntry[]
   query: string
   cat: string
-  openId: string | null
+  openIds: Set<string>
   onToggle: (id: string) => void
   onClear: () => void
   pal: CategoryConfigMap
 }
 
-export default function ResultGrid({ items, query, cat, openId, onToggle, onClear, pal }: ResultGridProps) {
+export default function ResultGrid({ items, query, cat, openIds, onToggle, onClear, pal }: ResultGridProps) {
   const label = cat !== 'all' ? pal[cat as keyof CategoryConfigMap]?.label : 'All Topics'
   const catColor = cat !== 'all' ? pal[cat as keyof CategoryConfigMap]?.a : '#f0c93a'
   const queryLabel = query.trim()
@@ -104,7 +104,7 @@ export default function ResultGrid({ items, query, cat, openId, onToggle, onClea
             <Card
               key={item.id}
               item={item}
-              open={openId === item.id}
+              open={openIds.has(item.id)}
               onToggle={() => onToggle(item.id)}
             />
           ))}

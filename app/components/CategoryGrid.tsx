@@ -6,12 +6,12 @@ import Card from './Card'
 interface CategoryGridProps {
   bycat: Record<string, GuitarEntry[]>
   featured: GuitarEntry[]
-  openId: string | null
+  openIds: Set<string>
   onToggle: (id: string) => void
   onCatSelect: (cat: string) => void
 }
 
-export default function CategoryGrid({ bycat, featured, openId, onToggle, onCatSelect }: CategoryGridProps) {
+export default function CategoryGrid({ bycat, featured, openIds, onToggle, onCatSelect }: CategoryGridProps) {
   const cats = CATEGORIES.filter(c => c !== 'all')
 
   return (
@@ -175,7 +175,7 @@ export default function CategoryGrid({ bycat, featured, openId, onToggle, onCatS
           <Card
             key={item.id}
             item={item}
-            open={openId === item.id}
+            open={openIds.has(item.id)}
             onToggle={() => onToggle(item.id)}
           />
         ))}
