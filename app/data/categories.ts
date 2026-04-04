@@ -13,43 +13,43 @@ import type { CategoryConfigMap, CategorySlug } from '../types'
  */
 export const CATEGORY_CONFIG: CategoryConfigMap = {
   scales: {
-    a: '#f0c93a', b: 'rgba(240,201,58,.12)', br: 'rgba(240,201,58,.35)',
+    a: '#f0c93a', b: 'rgba(240,201,58,.24)', br: 'rgba(240,201,58,.70)',
     label: 'Scales',
     desc: 'Major, minor, pentatonic, blues & exotic scales',
     sitemapPriority: 0.9,
   },
   modes: {
-    a: '#5fd3c8', b: 'rgba(95,211,200,.12)', br: 'rgba(95,211,200,.35)',
+    a: '#5fd3c8', b: 'rgba(95,211,200,.24)', br: 'rgba(95,211,200,.70)',
     label: 'Modes',
     desc: 'All 7 diatonic modes with sounds and uses',
     sitemapPriority: 0.9,
   },
   chords: {
-    a: '#6eb4ff', b: 'rgba(110,180,255,.12)', br: 'rgba(110,180,255,.35)',
+    a: '#6eb4ff', b: 'rgba(110,180,255,.24)', br: 'rgba(110,180,255,.70)',
     label: 'Chords',
     desc: 'Triads, 7ths, sus, dim, aug and beyond',
     sitemapPriority: 0.9,
   },
   progressions: {
-    a: '#b987f5', b: 'rgba(185,135,245,.12)', br: 'rgba(185,135,245,.35)',
+    a: '#b987f5', b: 'rgba(185,135,245,.24)', br: 'rgba(185,135,245,.70)',
     label: 'Progressions',
     desc: 'Classic chord movements across all genres',
     sitemapPriority: 0.8,
   },
   techniques: {
-    a: '#ff8c42', b: 'rgba(255,140,66,.12)', br: 'rgba(255,140,66,.35)',
+    a: '#ff8c42', b: 'rgba(255,140,66,.24)', br: 'rgba(255,140,66,.70)',
     label: 'Techniques',
     desc: 'Bending, vibrato, tapping, legato and more',
     sitemapPriority: 0.8,
   },
   theory: {
-    a: '#4dd98a', b: 'rgba(77,217,138,.12)', br: 'rgba(77,217,138,.35)',
+    a: '#4dd98a', b: 'rgba(77,217,138,.24)', br: 'rgba(77,217,138,.70)',
     label: 'Theory',
     desc: 'Circle of fifths, CAGED, intervals, keys',
     sitemapPriority: 0.8,
   },
   tunings: {
-    a: '#ff6b8a', b: 'rgba(255,107,138,.12)', br: 'rgba(255,107,138,.35)',
+    a: '#ff6b8a', b: 'rgba(255,107,138,.24)', br: 'rgba(255,107,138,.70)',
     label: 'Tunings',
     desc: 'Standard, drop, open and alternate tunings',
     sitemapPriority: 0.7,

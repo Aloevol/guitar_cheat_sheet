@@ -1,5 +1,6 @@
 'use client'
 import { CATEGORIES, PAL } from '../data/guitarData'
+import { FONT, FS, BG, COLOR, PAD, RADIUS } from '../theme'
 import type { GuitarEntry, CategorySlug } from '../types'
 import Card from './Card'
 
@@ -19,12 +20,12 @@ export default function CategoryGrid({ bycat, featured, openIds, onToggle, onCat
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
         <span style={{
-          fontFamily: "'Space Mono', monospace",
-          fontSize: '.58rem',
+          fontFamily: FONT.mono,
+          fontSize: FS.sm,
           fontWeight: 700,
           textTransform: 'uppercase',
           letterSpacing: '0.16em',
-          color: 'rgba(255,255,255,.2)',
+          color: COLOR.faint,
           whiteSpace: 'nowrap',
         }}>Browse by Category</span>
         <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,.05)' }} />
@@ -32,7 +33,7 @@ export default function CategoryGrid({ bycat, featured, openIds, onToggle, onCat
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
         gap: 12,
         marginBottom: 64,
       }}>
@@ -47,9 +48,9 @@ export default function CategoryGrid({ bycat, featured, openIds, onToggle, onCat
               key={c}
               onClick={() => onCatSelect(c)}
               style={{
-                background: '#131110',
+                background: BG.catCard,
                 border: '1px solid rgba(255,255,255,.06)',
-                borderRadius: 10,
+                borderRadius: RADIUS.xxl,
                 overflow: 'hidden',
                 cursor: 'pointer',
                 transition: 'transform .15s, border-color .15s, box-shadow .15s',
@@ -73,72 +74,72 @@ export default function CategoryGrid({ bycat, featured, openIds, onToggle, onCat
                 background: `linear-gradient(180deg, ${p.a}, ${p.a}44)`,
               }} />
 
-              <div style={{ padding: '16px 16px 16px 20px' }}>
+              <div style={{ padding: PAD.catCard }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                   <span style={{
-                    fontFamily: "'Space Mono', monospace",
-                    fontSize: '.62rem',
+                    fontFamily: FONT.mono,
+                    fontSize: FS.base,
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em',
                     color: p.a,
                     background: p.b,
                     border: `1px solid ${p.br}`,
-                    borderRadius: 4,
-                    padding: '2px 8px',
+                    borderRadius: RADIUS.sm,
+                    padding: '4px 11px',
                   }}>{p.label}</span>
                   <span style={{
-                    fontFamily: "'Space Mono', monospace",
-                    fontSize: '.58rem',
-                    color: 'rgba(255,255,255,.2)',
-                    background: 'rgba(255,255,255,.04)',
-                    borderRadius: 3,
-                    padding: '1px 6px',
+                    fontFamily: FONT.mono,
+                    fontSize: FS.xs,
+                    color: 'rgba(255,255,255,.28)',
+                    background: 'rgba(255,255,255,.05)',
+                    borderRadius: RADIUS.xs,
+                    padding: '3px 8px',
                   }}>{items.length} topics</span>
                 </div>
 
                 <p style={{
-                  fontFamily: "'Lora', Georgia, serif",
-                  fontSize: '.73rem',
-                  color: 'rgba(255,255,255,.35)',
+                  fontFamily: FONT.body,
+                  fontSize: FS.monoLg,
+                  color: COLOR.detail,
                   lineHeight: 1.5,
-                  marginBottom: 12,
+                  marginBottom: 14,
                   fontStyle: 'italic',
                 }}>{p.desc}</p>
 
                 <div style={{ marginBottom: 12 }}>
                   {preview.map(item => (
                     <div key={item.id} style={{
-                      fontFamily: "'Lora', Georgia, serif",
-                      fontSize: '.71rem',
-                      color: 'rgba(255,255,255,.3)',
+                      fontFamily: FONT.body,
+                      fontSize: FS.monoLg,
+                      color: COLOR.detail,
                       padding: '2px 0',
                       display: 'flex',
                       alignItems: 'center',
                       gap: 7,
                     }}>
-                      <span style={{ color: p.a, fontSize: '.5rem', opacity: .7 }}>◆</span>
+                      <span style={{ color: p.a, fontSize: FS.xxs, opacity: .9 }}>◆</span>
                       {item.title}
                     </div>
                   ))}
                   {more > 0 && (
                     <div style={{
-                      fontFamily: "'Space Mono', monospace",
-                      fontSize: '.58rem',
-                      color: 'rgba(255,255,255,.15)',
-                      paddingTop: 3,
+                      fontFamily: FONT.mono,
+                      fontSize: FS.sm,
+                      color: 'rgba(255,255,255,.2)',
+                      paddingTop: 4,
                       paddingLeft: 17,
                     }}>+{more} more</div>
                   )}
                 </div>
 
                 <div style={{
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: '.6rem',
+                  fontFamily: FONT.mono,
+                  fontSize: FS.base,
                   fontWeight: 700,
                   color: p.a,
                   letterSpacing: '0.08em',
-                  opacity: 0.8,
+                  opacity: 0.9,
                 }}>Explore {p.label} →</div>
               </div>
             </div>
@@ -148,36 +149,33 @@ export default function CategoryGrid({ bycat, featured, openIds, onToggle, onCat
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
         <span style={{
-          fontFamily: "'Space Mono', monospace",
-          fontSize: '.58rem',
+          fontFamily: FONT.mono,
+          fontSize: FS.sm,
           fontWeight: 700,
           textTransform: 'uppercase',
           letterSpacing: '0.16em',
-          color: 'rgba(255,255,255,.2)',
+          color: COLOR.faint,
           whiteSpace: 'nowrap',
         }}>Essential Starting Points</span>
         <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,.05)' }} />
       </div>
       <p style={{
-        fontFamily: "'Lora', Georgia, serif",
-        fontSize: '.73rem',
-        color: 'rgba(255,255,255,.2)',
-        marginBottom: 20,
+        fontFamily: FONT.body,
+        fontSize: FS.monoLg,
+        color: 'rgba(255,255,255,.28)',
+        marginBottom: 22,
         fontStyle: 'italic',
       }}>The six topics every guitarist should know first</p>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-        gap: 14,
-      }}>
+      <div style={{ columns: '340px', columnGap: 14 }}>
         {featured.map(item => (
-          <Card
-            key={item.id}
-            item={item}
-            open={openIds.has(item.id)}
-            onToggle={() => onToggle(item.id)}
-          />
+          <div key={item.id} style={{ breakInside: 'avoid', marginBottom: 14 }}>
+            <Card
+              item={item}
+              open={openIds.has(item.id)}
+              onToggle={() => onToggle(item.id)}
+            />
+          </div>
         ))}
       </div>
     </div>

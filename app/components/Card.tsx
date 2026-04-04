@@ -1,5 +1,6 @@
 'use client'
 import { PAL } from '../data/guitarData'
+import { FONT, FS, BG, COLOR, PAD, RADIUS } from '../theme'
 import type { GuitarEntry } from '../types'
 import NotePill from './NotePill'
 import FormulaSteps from './FormulaSteps'
@@ -21,9 +22,9 @@ export default function Card({ item, open, onToggle }: CardProps) {
     <div
       onClick={onToggle}
       style={{
-        background: open ? '#1a1712' : '#141210',
+        background: open ? BG.cardOpen : BG.card,
         border: `1px solid ${open ? p.br : 'rgba(255,255,255,.06)'}`,
-        borderRadius: 10,
+        borderRadius: RADIUS.xxl,
         overflow: 'hidden',
         cursor: 'pointer',
         transition: 'border-color .2s, box-shadow .2s, background .2s, transform .15s',
@@ -49,46 +50,46 @@ export default function Card({ item, open, onToggle }: CardProps) {
       <div style={{ height: 2, background: `linear-gradient(90deg, ${p.a}, ${p.a}88, transparent)` }} />
 
       {/* Card header */}
-      <div style={{ padding: '14px 16px 12px' }}>
+      <div style={{ padding: PAD.cardHeader }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <span style={{
-              fontFamily: "'Space Mono', monospace",
-              fontSize: '.58rem',
+              fontFamily: FONT.mono,
+              fontSize: FS.sm,
               fontWeight: 700,
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
               color: p.a,
               background: p.b,
               border: `1px solid ${p.br}`,
-              borderRadius: 4,
-              padding: '2px 7px',
+              borderRadius: RADIUS.sm,
+              padding: '4px 10px',
             }}>{p.label}</span>
             {item.example?.root && (
               <span style={{
-                fontFamily: "'Space Mono', monospace",
-                fontSize: '.56rem',
-                color: 'rgba(255,255,255,.22)',
-                background: 'rgba(255,255,255,.04)',
-                border: '1px solid rgba(255,255,255,.07)',
-                borderRadius: 3,
-                padding: '1px 5px',
+                fontFamily: FONT.mono,
+                fontSize: FS.xxs,
+                color: 'rgba(255,255,255,.35)',
+                background: 'rgba(255,255,255,.05)',
+                border: '1px solid rgba(255,255,255,.09)',
+                borderRadius: RADIUS.xs,
+                padding: '3px 7px',
               }}>ex. {item.example.root}</span>
             )}
           </div>
           <div
             onClick={e => { e.stopPropagation(); onToggle() }}
             style={{
-              width: 24,
-              height: 24,
+              width: 26,
+              height: 26,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: '50%',
               background: open ? p.b : 'rgba(255,255,255,.04)',
               border: open ? `1px solid ${p.br}` : '1px solid rgba(255,255,255,.07)',
-              color: open ? p.a : 'rgba(255,255,255,.3)',
-              fontSize: '.7rem',
+              color: open ? p.a : 'rgba(255,255,255,.35)',
+              fontSize: FS.base,
               transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
               transition: 'transform .2s, background .2s, border-color .2s, color .2s',
               cursor: 'pointer',
@@ -97,19 +98,19 @@ export default function Card({ item, open, onToggle }: CardProps) {
         </div>
 
         <div style={{
-          fontFamily: "'Playfair Display', Georgia, serif",
-          fontSize: '1.05rem',
+          fontFamily: FONT.display,
+          fontSize: FS.title,
           fontWeight: 800,
-          color: '#f5edda',
-          marginBottom: 5,
+          color: COLOR.heading,
+          marginBottom: 6,
           lineHeight: 1.25,
           letterSpacing: '-.01em',
         }}>{item.title}</div>
 
         <div style={{
-          fontFamily: "'Lora', Georgia, serif",
-          fontSize: '.76rem',
-          color: 'rgba(255,255,255,.4)',
+          fontFamily: FONT.body,
+          fontSize: FS.body,
+          color: COLOR.body,
           lineHeight: 1.55,
           marginBottom: shortNotes && item.example?.notes?.length ? 10 : 0,
         }}>{item.summary}</div>
@@ -129,8 +130,8 @@ export default function Card({ item, open, onToggle }: CardProps) {
           onClick={e => e.stopPropagation()}
           style={{
             borderTop: '1px solid rgba(255,255,255,.05)',
-            background: '#111009',
-            padding: '18px 16px',
+            background: BG.cardBody,
+            padding: PAD.cardBody,
           }}
         >
           <div style={{ marginBottom: 18 }}>
@@ -142,14 +143,14 @@ export default function Card({ item, open, onToggle }: CardProps) {
             <div style={{ marginBottom: 18 }}>
               <SectionLabel accent={p.a}>Degrees / Intervals</SectionLabel>
               <div style={{
-                fontFamily: "'Space Mono', monospace",
-                fontSize: '.72rem',
-                color: 'rgba(255,255,255,.5)',
+                fontFamily: FONT.mono,
+                fontSize: FS.monoLg,
+                color: 'rgba(255,255,255,.62)',
                 letterSpacing: '0.1em',
-                background: 'rgba(255,255,255,.03)',
-                border: '1px solid rgba(255,255,255,.06)',
-                borderRadius: 6,
-                padding: '8px 12px',
+                background: 'rgba(255,255,255,.04)',
+                border: '1px solid rgba(255,255,255,.08)',
+                borderRadius: RADIUS.lg,
+                padding: '11px 15px',
               }}>{item.degrees}</div>
             </div>
           )}
@@ -163,9 +164,9 @@ export default function Card({ item, open, onToggle }: CardProps) {
           <div style={{ marginBottom: 18 }}>
             <SectionLabel accent={p.a}>Details</SectionLabel>
             <p style={{
-              fontFamily: "'Lora', Georgia, serif",
-              fontSize: '.77rem',
-              color: 'rgba(255,255,255,.5)',
+              fontFamily: FONT.body,
+              fontSize: FS.detail,
+              color: COLOR.detail,
               lineHeight: 1.8,
               margin: 0,
             }}>{item.details}</p>
@@ -177,13 +178,13 @@ export default function Card({ item, open, onToggle }: CardProps) {
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                 {item.chords.map((c, i) => (
                   <span key={i} style={{
-                    fontFamily: "'Space Mono', monospace",
-                    fontSize: '.62rem',
-                    padding: '4px 9px',
-                    borderRadius: 5,
-                    background: 'rgba(255,255,255,.04)',
-                    border: '1px solid rgba(255,255,255,.08)',
-                    color: 'rgba(255,255,255,.45)',
+                    fontFamily: FONT.mono,
+                    fontSize: FS.base,
+                    padding: '6px 12px',
+                    borderRadius: RADIUS.md,
+                    background: 'rgba(255,255,255,.07)',
+                    border: '1px solid rgba(255,255,255,.18)',
+                    color: 'rgba(255,255,255,.78)',
                   }}>{c}</span>
                 ))}
               </div>
@@ -195,14 +196,13 @@ export default function Card({ item, open, onToggle }: CardProps) {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
               {item.usedBy.split(', ').map((g, i) => (
                 <span key={i} style={{
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: '.6rem',
-                  padding: '3px 8px',
-                  borderRadius: 10,
+                  fontFamily: FONT.mono,
+                  fontSize: FS.base,
+                  padding: '5px 11px',
+                  borderRadius: RADIUS.xxl,
                   background: p.b,
                   border: `1px solid ${p.br}`,
                   color: p.a,
-                  opacity: 0.75,
                 }}>{g}</span>
               ))}
             </div>
@@ -212,14 +212,13 @@ export default function Card({ item, open, onToggle }: CardProps) {
             position: 'relative',
             background: `linear-gradient(135deg, ${p.b}, rgba(0,0,0,.2))`,
             border: `1px solid ${p.br}`,
-            borderRadius: 8,
-            padding: '14px 16px',
+            borderRadius: RADIUS.xl,
+            padding: PAD.proTip,
             overflow: 'hidden',
           }}>
             <div style={{
               position: 'absolute',
-              top: -4,
-              right: 12,
+              top: -4, right: 12,
               fontFamily: 'Georgia, serif',
               fontSize: '4rem',
               color: p.a,
@@ -229,24 +228,24 @@ export default function Card({ item, open, onToggle }: CardProps) {
               userSelect: 'none',
             }}>&ldquo;</div>
             <div style={{
-              fontFamily: "'Space Mono', monospace",
-              fontSize: '.58rem',
+              fontFamily: FONT.mono,
+              fontSize: FS.sm,
               fontWeight: 700,
               textTransform: 'uppercase',
               letterSpacing: '0.12em',
               color: p.a,
-              marginBottom: 7,
+              marginBottom: 9,
               display: 'flex',
               alignItems: 'center',
               gap: 6,
             }}>
-              <span style={{ fontSize: '.7rem' }}>◆</span> Pro Tip
+              <span style={{ fontSize: FS.base }}>◆</span> Pro Tip
             </div>
             <p style={{
-              fontFamily: "'Lora', Georgia, serif",
+              fontFamily: FONT.body,
               fontStyle: 'italic',
-              fontSize: '.78rem',
-              color: '#d4c4a0',
+              fontSize: FS.detail,
+              color: COLOR.proTip,
               lineHeight: 1.7,
               margin: 0,
             }}>{item.tip}</p>

@@ -1,4 +1,5 @@
 'use client'
+import { FONT, FS, COLOR, RADIUS } from '../theme'
 import type { GuitarEntry, CategoryConfigMap } from '../types'
 import Card from './Card'
 
@@ -31,22 +32,22 @@ export default function ResultGrid({ items, query, cat, openIds, onToggle, onCle
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <span style={{
-            fontFamily: "'Space Mono', monospace",
-            fontSize: '.72rem',
+            fontFamily: FONT.mono,
+            fontSize: FS.monoLg,
             fontWeight: 700,
             color: catColor,
             background: cat !== 'all' ? pal[cat as keyof CategoryConfigMap]?.b : 'rgba(240,201,58,.1)',
             border: `1px solid ${cat !== 'all' ? pal[cat as keyof CategoryConfigMap]?.br : 'rgba(240,201,58,.25)'}`,
-            borderRadius: 5,
+            borderRadius: RADIUS.md,
             padding: '3px 10px',
           }}>{items.length} result{items.length !== 1 ? 's' : ''}</span>
 
           <span style={{
-            fontFamily: "'Space Mono', monospace",
-            fontSize: '.65rem',
-            color: 'rgba(255,255,255,.3)',
+            fontFamily: FONT.mono,
+            fontSize: FS.keys,
+            color: COLOR.muted,
           }}>
-            in <span style={{ color: 'rgba(255,255,255,.55)' }}>{label}</span>
+            in <span style={{ color: 'rgba(255,255,255,.7)' }}>{label}</span>
             {queryLabel && (
               <> for <span style={{ color: catColor }}>&ldquo;{queryLabel}&rdquo;</span></>
             )}
@@ -56,13 +57,13 @@ export default function ResultGrid({ items, query, cat, openIds, onToggle, onCle
         <button
           onClick={onClear}
           style={{
-            fontFamily: "'Space Mono', monospace",
-            fontSize: '.62rem',
-            background: 'rgba(255,255,255,.04)',
-            border: '1px solid rgba(255,255,255,.1)',
-            color: 'rgba(255,255,255,.4)',
-            borderRadius: 6,
-            padding: '5px 12px',
+            fontFamily: FONT.mono,
+            fontSize: FS.base,
+            background: 'rgba(255,255,255,.05)',
+            border: '1px solid rgba(255,255,255,.12)',
+            color: 'rgba(255,255,255,.5)',
+            borderRadius: RADIUS.lg,
+            padding: '7px 15px',
             cursor: 'pointer',
             transition: 'all .15s',
             letterSpacing: '0.04em',
@@ -72,8 +73,8 @@ export default function ResultGrid({ items, query, cat, openIds, onToggle, onCle
             e.currentTarget.style.color = 'rgba(255,255,255,.7)'
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.background = 'rgba(255,255,255,.04)'
-            e.currentTarget.style.color = 'rgba(255,255,255,.4)'
+            e.currentTarget.style.background = 'rgba(255,255,255,.05)'
+            e.currentTarget.style.color = 'rgba(255,255,255,.5)'
           }}
         >✕ Clear</button>
       </div>
@@ -82,31 +83,28 @@ export default function ResultGrid({ items, query, cat, openIds, onToggle, onCle
         <div style={{ textAlign: 'center', padding: '72px 20px' }}>
           <div style={{ fontSize: '3rem', marginBottom: 18, opacity: 0.2 }}>𝄞</div>
           <div style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: '1.3rem',
+            fontFamily: FONT.display,
+            fontSize: FS.hero,
             color: 'rgba(255,255,255,.25)',
             marginBottom: 10,
           }}>No results</div>
           <div style={{
-            fontFamily: "'Lora', Georgia, serif",
-            fontSize: '.78rem',
-            color: 'rgba(255,255,255,.15)',
+            fontFamily: FONT.body,
+            fontSize: FS.detail,
+            color: 'rgba(255,255,255,.22)',
             fontStyle: 'italic',
           }}>Try searching for a scale name, technique, or chord type</div>
         </div>
       ) : (
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-          gap: 14,
-        }}>
+        <div style={{ columns: '340px', columnGap: 14 }}>
           {items.map(item => (
-            <Card
-              key={item.id}
-              item={item}
-              open={openIds.has(item.id)}
-              onToggle={() => onToggle(item.id)}
-            />
+            <div key={item.id} style={{ breakInside: 'avoid', marginBottom: 14 }}>
+              <Card
+                item={item}
+                open={openIds.has(item.id)}
+                onToggle={() => onToggle(item.id)}
+              />
+            </div>
           ))}
         </div>
       )}

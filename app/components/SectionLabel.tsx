@@ -1,3 +1,5 @@
+import { FONT, FS, COLOR } from '../theme'
+
 interface SectionLabelProps {
   children: React.ReactNode
   accent?: string
@@ -5,14 +7,14 @@ interface SectionLabelProps {
 
 export default function SectionLabel({ children, accent }: SectionLabelProps) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
       <span style={{
-        fontFamily: "'Space Mono', monospace",
-        fontSize: '.55rem',
+        fontFamily: FONT.mono,
+        fontSize: FS.sm,
         fontWeight: 700,
         textTransform: 'uppercase',
         letterSpacing: '0.13em',
-        color: accent || 'rgba(255,255,255,.3)',
+        color: accent || COLOR.faint,
       }}>{children}</span>
       <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,.05)' }} />
     </div>
