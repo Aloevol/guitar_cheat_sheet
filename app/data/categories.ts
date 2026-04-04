@@ -54,6 +54,12 @@ export const CATEGORY_CONFIG: CategoryConfigMap = {
     desc: 'Standard, drop, open and alternate tunings',
     sitemapPriority: 0.7,
   },
+  solos: {
+    a: '#ff4d6d', b: 'rgba(255,77,109,.24)', br: 'rgba(255,77,109,.70)',
+    label: 'Solos',
+    desc: 'Pre-built solo styles for every scale — techniques, timing & pioneers',
+    sitemapPriority: 0.9,
+  },
 } as const
 
 /** Ordered array used by filter UI ('all' first) */

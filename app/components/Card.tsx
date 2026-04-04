@@ -1,11 +1,13 @@
 'use client'
 import { PAL } from '../data/guitarData'
+import { FRETBOARDS } from '../data/fretboards'
 import { FONT, FS, BG, COLOR, PAD, RADIUS } from '../theme'
 import type { GuitarEntry } from '../types'
 import NotePill from './NotePill'
 import FormulaSteps from './FormulaSteps'
 import KeysPanel from './KeysPanel'
 import SectionLabel from './SectionLabel'
+import FretboardDiagram from './FretboardDiagram'
 
 interface CardProps {
   item: GuitarEntry
@@ -17,6 +19,7 @@ export default function Card({ item, open, onToggle }: CardProps) {
   const p = PAL[item.category]
   const shortNotes = item.example?.notes?.every(n => n.length <= 6)
   const hasKeys = item.allKeys && item.allKeys.length > 0
+  const diagrams = FRETBOARDS[item.id] ?? []
 
   return (
     <div
@@ -134,6 +137,27 @@ export default function Card({ item, open, onToggle }: CardProps) {
             padding: PAD.cardBody,
           }}
         >
+          {diagrams.length > 0 && (
+            <div style={{ marginBottom: 24 }}>
+              <SectionLabel accent={p.a}>Fretboard</SectionLabel>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                {diagrams.map(diagram => (
+                  <div
+                    key={diagram.id}
+                    style={{
+                      background: 'rgba(0,0,0,.35)',
+                      border: `1px solid ${p.br}`,
+                      borderRadius: RADIUS.xl,
+                      padding: '14px 16px',
+                    }}
+                  >
+                    <FretboardDiagram diagram={diagram} accentColor={p.a} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div style={{ marginBottom: 18 }}>
             <SectionLabel accent={p.a}>Formula</SectionLabel>
             <FormulaSteps formula={item.formula} pal={p} />

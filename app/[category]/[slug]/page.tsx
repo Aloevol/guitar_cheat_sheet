@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { DATA } from '../../data'
 import { CATEGORY_CONFIG } from '../../data/categories'
+import { FRETBOARDS } from '../../data/fretboards'
+import FretboardDiagram from '../../components/FretboardDiagram'
 import type { CategorySlug, GuitarEntry } from '../../types'
 
 const SITE_URL = 'https://guitarcheatsheet.com'
@@ -196,15 +198,39 @@ export default async function EntryPage({ params }: Props) {
             )}
           </div>
 
+          {/* Fretboard diagrams */}
+          {(FRETBOARDS[entry.id] ?? []).length > 0 && (
+            <section aria-labelledby="fretboard-heading" style={{ marginBottom: 40 }}>
+              <h2 id="fretboard-heading" style={{
+                fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', fontWeight: 700,
+                color: '#f5edda', marginBottom: 16,
+              }}>Fretboard Positions</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                {(FRETBOARDS[entry.id] ?? []).map(diagram => (
+                  <div key={diagram.id} style={{
+                    background: 'rgba(0,0,0,.35)',
+                    border: `1px solid ${cat.br}`,
+                    borderRadius: 10,
+                    padding: '16px 20px',
+                  }}>
+                    <FretboardDiagram diagram={diagram} accentColor={cat.a} />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* Details */}
           <section aria-labelledby="details-heading" style={{ marginBottom: 40 }}>
             <h2 id="details-heading" style={{
               fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', fontWeight: 700,
               color: '#f5edda', marginBottom: 12,
             }}>About the {entry.title}</h2>
-            <p style={{ fontFamily: "'Lora', Georgia, serif", fontSize: '.95rem', color: 'rgba(255,255,255,.65)', lineHeight: 1.75 }}>
-              {entry.details}
-            </p>
+            {entry.details.split('\n\n').map((para, i) => (
+              <p key={i} style={{ fontFamily: "'Lora', Georgia, serif", fontSize: '.95rem', color: 'rgba(255,255,255,.65)', lineHeight: 1.75, marginTop: i > 0 ? 16 : 0, marginBottom: 0 }}>
+                {para}
+              </p>
+            ))}
           </section>
 
           {/* Used by */}

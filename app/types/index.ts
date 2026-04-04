@@ -8,6 +8,7 @@ export type CategorySlug =
   | 'techniques'
   | 'theory'
   | 'tunings'
+  | 'solos'
 
 export interface CategoryConfig {
   /** Accent colour (hex) */
