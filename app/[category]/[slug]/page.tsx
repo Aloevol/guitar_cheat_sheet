@@ -63,33 +63,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-function KeyTable({ entry }: { entry: GuitarEntry }) {
+function KeyTable({ entry, cat }: { entry: GuitarEntry; cat: { a: string; b: string; br: string } }) {
   if (!entry.allKeys?.length) return null
   return (
-    <div style={{ overflowX: 'auto', marginTop: 24 }}>
+    <div style={{ overflowX: 'auto' }}>
       <table style={{
         width: '100%', borderCollapse: 'collapse',
-        fontFamily: "'Space Mono', monospace", fontSize: '.72rem',
+        fontFamily: "'Inter', system-ui, sans-serif",
+        fontSize: '.76rem',
       }}>
         <thead>
-          <tr style={{ borderBottom: '1px solid rgba(255,255,255,.1)' }}>
-            <th style={{ padding: '8px 12px', textAlign: 'left', color: 'rgba(255,255,255,.4)', fontWeight: 700, whiteSpace: 'nowrap' }}>Key</th>
-            <th style={{ padding: '8px 12px', textAlign: 'left', color: 'rgba(255,255,255,.4)', fontWeight: 700 }}>Notes</th>
+          <tr style={{ borderBottom: '1px solid #353534', background: '#1c1b1b' }}>
+            <th style={{ padding: '10px 16px', textAlign: 'left', color: 'rgba(169,138,125,.6)', fontWeight: 700, whiteSpace: 'nowrap', letterSpacing: '0.1em', fontSize: '.62rem', textTransform: 'uppercase' }}>Key</th>
+            <th style={{ padding: '10px 16px', textAlign: 'left', color: 'rgba(169,138,125,.6)', fontWeight: 700, letterSpacing: '0.1em', fontSize: '.62rem', textTransform: 'uppercase' }}>Notes</th>
             {entry.allKeys[0]?.chords?.length > 0 && (
-              <th style={{ padding: '8px 12px', textAlign: 'left', color: 'rgba(255,255,255,.4)', fontWeight: 700 }}>Chords</th>
+              <th style={{ padding: '10px 16px', textAlign: 'left', color: 'rgba(169,138,125,.6)', fontWeight: 700, letterSpacing: '0.1em', fontSize: '.62rem', textTransform: 'uppercase' }}>Chords</th>
             )}
           </tr>
         </thead>
         <tbody>
           {entry.allKeys.map((k, i) => (
             <tr key={k.root} style={{
-              borderBottom: '1px solid rgba(255,255,255,.04)',
-              background: i === 0 ? 'rgba(255,255,255,.03)' : 'transparent',
+              borderBottom: '1px solid rgba(53,53,52,.6)',
+              background: i === 0 ? `${cat.b}` : 'transparent',
             }}>
-              <td style={{ padding: '7px 12px', color: '#f0c93a', fontWeight: 700, whiteSpace: 'nowrap' }}>{k.root}</td>
-              <td style={{ padding: '7px 12px', color: '#f5edda' }}>{k.notes.join('  ')}</td>
+              <td style={{ padding: '9px 16px', color: cat.a, fontWeight: 700, whiteSpace: 'nowrap' }}>{k.root}</td>
+              <td style={{ padding: '9px 16px', color: '#e5e2e1', letterSpacing: '0.04em' }}>{k.notes.join('  ')}</td>
               {k.chords?.length > 0 && (
-                <td style={{ padding: '7px 12px', color: 'rgba(255,255,255,.5)', fontSize: '.65rem' }}>
+                <td style={{ padding: '9px 16px', color: '#a98a7d', fontSize: '.7rem' }}>
                   {k.chords.join(' · ')}
                 </td>
               )}
@@ -107,9 +108,10 @@ export default async function EntryPage({ params }: Props) {
   if (!entry) notFound()
 
   const cat = CATEGORY_CONFIG[entry.category as CategorySlug]
+  const diagrams = FRETBOARDS[entry.id] ?? []
   const related = DATA
     .filter(d => d.category === entry.category && d.id !== entry.id)
-    .slice(0, 4)
+    .slice(0, 6)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -126,223 +128,554 @@ export default async function EntryPage({ params }: Props) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <main style={{ minHeight: '100vh', background: '#0d0b08' }}>
-        {/* Nav */}
+
+      <style>{`
+        .entry-related-item:hover {
+          background: #2a2a2a !important;
+          border-left-color: ${cat.a} !important;
+        }
+        .entry-related-item:hover .entry-related-title {
+          color: ${cat.a} !important;
+        }
+        .entry-tag:hover {
+          border-color: ${cat.a}55 !important;
+          color: ${cat.a} !important;
+        }
+        .entry-back:hover { color: ${cat.a} !important; }
+
+        @media (max-width: 767px) {
+          .entry-layout { flex-direction: column !important; }
+          .entry-sidebar { display: none !important; }
+        }
+      `}</style>
+
+      <main style={{ minHeight: '100vh', background: '#131313', paddingBottom: 100 }}>
+
+        {/* Breadcrumb */}
         <nav style={{
-          borderBottom: '1px solid rgba(255,255,255,.06)',
+          background: '#0e0e0e',
+          borderBottom: '1px solid #353534',
           padding: '14px 24px',
           display: 'flex', gap: 8, alignItems: 'center',
-          fontFamily: "'Space Mono', monospace", fontSize: '.7rem',
+          fontFamily: "'Inter', system-ui, sans-serif",
+          fontSize: '.68rem',
         }}>
-          <Link href="/" style={{ color: '#c9a84c', textDecoration: 'none' }}>Guitar Cheat Sheet</Link>
-          <span style={{ color: 'rgba(255,255,255,.2)' }}>›</span>
-          <Link href={`/${entry.category}`} style={{ color: cat.a, textDecoration: 'none' }}>{cat.label}</Link>
-          <span style={{ color: 'rgba(255,255,255,.2)' }}>›</span>
-          <span style={{ color: 'rgba(255,255,255,.5)' }}>{entry.title}</span>
+          <Link href="/" style={{ color: '#ff6b00', textDecoration: 'none', fontWeight: 600 }}>Guitar Cheat Sheet</Link>
+          <span style={{ color: 'rgba(169,138,125,.3)' }}>›</span>
+          <Link href={`/${entry.category}`} style={{ color: cat.a, textDecoration: 'none', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '.6rem' }}>{cat.label}</Link>
+          <span style={{ color: 'rgba(169,138,125,.3)' }}>›</span>
+          <span style={{ color: '#a98a7d' }}>{entry.title}</span>
         </nav>
 
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '48px 24px 80px' }}>
-          {/* Category badge */}
-          <span style={{
-            fontFamily: "'Space Mono', monospace", fontSize: '.6rem', fontWeight: 700,
-            textTransform: 'uppercase', letterSpacing: '0.1em',
-            color: cat.a, background: cat.b, border: `1px solid ${cat.br}`,
-            borderRadius: 4, padding: '3px 8px',
-          }}>{cat.label}</span>
+        <div
+          className="entry-layout"
+          style={{
+            maxWidth: 1280, margin: '0 auto',
+            display: 'flex', gap: 0,
+            alignItems: 'flex-start',
+          }}
+        >
 
-          {/* Title */}
-          <h1 style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900,
-            color: '#f5edda', marginTop: 16, marginBottom: 8, lineHeight: 1.15,
-          }}>
-            {entry.title}
-          </h1>
+          {/* ── Main content (8 cols) ── */}
+          <div style={{ flex: 1, padding: '36px 32px', minWidth: 0 }}>
 
-          {/* Summary */}
-          <p style={{
-            fontFamily: "'Lora', Georgia, serif", fontSize: '1.1rem',
-            color: 'rgba(255,255,255,.6)', lineHeight: 1.6, marginBottom: 32,
-          }}>
-            {entry.summary}
-          </p>
-
-          {/* Formula + Degrees */}
-          <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 32 }}>
-            {entry.formula && (
-              <div style={{
-                background: '#141210', border: '1px solid rgba(255,255,255,.08)',
-                borderRadius: 8, padding: '14px 20px', flex: '1 1 200px',
-              }}>
-                <div style={{ fontFamily: "'Space Mono'", fontSize: '.58rem', color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 6 }}>Formula</div>
-                <div style={{ fontFamily: "'Space Mono'", fontSize: '.95rem', color: '#f0c93a', letterSpacing: '.08em' }}>{entry.formula}</div>
-              </div>
-            )}
-            {entry.degrees && (
-              <div style={{
-                background: '#141210', border: '1px solid rgba(255,255,255,.08)',
-                borderRadius: 8, padding: '14px 20px', flex: '1 1 200px',
-              }}>
-                <div style={{ fontFamily: "'Space Mono'", fontSize: '.58rem', color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 6 }}>Degrees</div>
-                <div style={{ fontFamily: "'Space Mono'", fontSize: '.95rem', color: '#f5edda', letterSpacing: '.1em' }}>{entry.degrees}</div>
-              </div>
-            )}
-            {entry.example?.notes?.length > 0 && (
-              <div style={{
-                background: '#141210', border: '1px solid rgba(255,255,255,.08)',
-                borderRadius: 8, padding: '14px 20px', flex: '1 1 200px',
-              }}>
-                <div style={{ fontFamily: "'Space Mono'", fontSize: '.58rem', color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 6 }}>Example in {entry.example.root}</div>
-                <div style={{ fontFamily: "'Space Mono'", fontSize: '.9rem', color: '#f5edda', letterSpacing: '.08em' }}>{entry.example.notes.join('  ')}</div>
-              </div>
-            )}
-          </div>
-
-          {/* Fretboard diagrams */}
-          {(FRETBOARDS[entry.id] ?? []).length > 0 && (
-            <section aria-labelledby="fretboard-heading" style={{ marginBottom: 40 }}>
-              <h2 id="fretboard-heading" style={{
-                fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', fontWeight: 700,
-                color: '#f5edda', marginBottom: 16,
-              }}>Fretboard Positions</h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                {(FRETBOARDS[entry.id] ?? []).map(diagram => (
-                  <div key={diagram.id} style={{
-                    background: 'rgba(0,0,0,.35)',
-                    border: `1px solid ${cat.br}`,
-                    borderRadius: 10,
-                    padding: '16px 20px',
-                  }}>
-                    <FretboardDiagram diagram={diagram} accentColor={cat.a} />
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Details */}
-          <section aria-labelledby="details-heading" style={{ marginBottom: 40 }}>
-            <h2 id="details-heading" style={{
-              fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', fontWeight: 700,
-              color: '#f5edda', marginBottom: 12,
-            }}>About the {entry.title}</h2>
-            {entry.details.split('\n\n').map((para, i) => (
-              <p key={i} style={{ fontFamily: "'Lora', Georgia, serif", fontSize: '.95rem', color: 'rgba(255,255,255,.65)', lineHeight: 1.75, marginTop: i > 0 ? 16 : 0, marginBottom: 0 }}>
-                {para}
-              </p>
-            ))}
-          </section>
-
-          {/* Used by */}
-          {entry.usedBy && (
-            <section aria-labelledby="genres-heading" style={{ marginBottom: 40 }}>
-              <h2 id="genres-heading" style={{
-                fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', fontWeight: 700,
-                color: '#f5edda', marginBottom: 12,
-              }}>Genres &amp; Contexts</h2>
-              <p style={{ fontFamily: "'Lora', Georgia, serif", fontSize: '.95rem', color: 'rgba(255,255,255,.65)', lineHeight: 1.75 }}>
-                {entry.usedBy}
-              </p>
-            </section>
-          )}
-
-          {/* Diatonic chords */}
-          {entry.chords?.length > 0 && (
-            <section aria-labelledby="chords-heading" style={{ marginBottom: 40 }}>
-              <h2 id="chords-heading" style={{
-                fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', fontWeight: 700,
-                color: '#f5edda', marginBottom: 16,
-              }}>Diatonic Chords</h2>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                {entry.chords.map((ch, i) => (
-                  <span key={i} style={{
-                    fontFamily: "'Space Mono', monospace", fontSize: '.7rem',
-                    color: cat.a, background: cat.b, border: `1px solid ${cat.br}`,
-                    borderRadius: 4, padding: '4px 10px',
-                  }}>{ch}</span>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* All 12 keys table */}
-          {entry.allKeys?.length > 0 && (
-            <section aria-labelledby="keys-heading" style={{ marginBottom: 48 }}>
-              <h2 id="keys-heading" style={{
-                fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', fontWeight: 700,
-                color: '#f5edda', marginBottom: 4,
-              }}>{entry.title} in All 12 Keys</h2>
-              <p style={{ fontFamily: "'Lora', serif", fontSize: '.85rem', color: 'rgba(255,255,255,.4)', marginBottom: 16 }}>
-                Every key laid out — root note, all scale/chord tones, diatonic chords.
-              </p>
-              <div style={{ background: '#111009', border: '1px solid rgba(255,255,255,.06)', borderRadius: 10, overflow: 'hidden' }}>
-                <KeyTable entry={entry} />
-              </div>
-            </section>
-          )}
-
-          {/* Pro Tip */}
-          {entry.tip && (
-            <section style={{
-              background: cat.b, border: `1px solid ${cat.br}`,
-              borderRadius: 10, padding: '20px 24px', marginBottom: 48,
-            }}>
-              <div style={{ fontFamily: "'Space Mono'", fontSize: '.6rem', color: cat.a, textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 8 }}>Pro Tip</div>
-              <p style={{ fontFamily: "'Lora', Georgia, serif", fontStyle: 'italic', fontSize: '.95rem', color: 'rgba(255,255,255,.75)', lineHeight: 1.7, margin: 0 }}>
-                {entry.tip}
-              </p>
-            </section>
-          )}
-
-          {/* Tags */}
-          {entry.tags?.length > 0 && (
-            <div style={{ marginBottom: 48, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {entry.tags.map(tag => (
-                <span key={tag} style={{
-                  fontFamily: "'Space Mono', monospace", fontSize: '.6rem',
-                  color: 'rgba(255,255,255,.35)', background: 'rgba(255,255,255,.04)',
-                  border: '1px solid rgba(255,255,255,.07)', borderRadius: 4, padding: '3px 8px',
-                }}>{tag}</span>
-              ))}
+            {/* Category badge */}
+            <div style={{ marginBottom: 16 }}>
+              <span style={{
+                display: 'inline-block',
+                fontFamily: "'Inter', system-ui, sans-serif",
+                fontSize: '.6rem', fontWeight: 700,
+                textTransform: 'uppercase', letterSpacing: '0.12em',
+                color: cat.a,
+                background: cat.b,
+                borderLeft: `2px solid ${cat.a}`,
+                padding: '4px 10px',
+              }}>{cat.label}</span>
             </div>
-          )}
 
-          {/* Related entries */}
-          {related.length > 0 && (
-            <section aria-labelledby="related-heading">
-              <h2 id="related-heading" style={{
-                fontFamily: "'Playfair Display', serif", fontSize: '1.15rem', fontWeight: 700,
-                color: '#f5edda', marginBottom: 16,
-              }}>More {cat.label}</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
-                {related.map(r => (
-                  <Link
-                    key={r.id}
-                    href={`/${r.category}/${r.id}`}
+            {/* Title */}
+            <h1 style={{
+              fontFamily: "'Noto Serif', Georgia, serif",
+              fontSize: 'clamp(1.6rem, 3.5vw, 2.5rem)',
+              fontWeight: 600, lineHeight: 1.2,
+              color: '#e5e2e1',
+              marginBottom: 14,
+              letterSpacing: '-0.01em',
+            }}>{entry.title}</h1>
+
+            {/* Summary */}
+            <p style={{
+              fontFamily: "'Inter', system-ui, sans-serif",
+              fontSize: '1rem', color: '#e2bfb0',
+              lineHeight: 1.65, marginBottom: 28,
+              maxWidth: 700,
+            }}>{entry.summary}</p>
+
+            {/* Formula + Degrees stat cards */}
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 36 }}>
+              {entry.formula && (
+                <div style={{
+                  background: '#1c1b1b',
+                  border: '1px solid #353534',
+                  padding: '14px 20px',
+                  flex: '1 1 180px',
+                  minWidth: 0,
+                }}>
+                  <div style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.58rem', fontWeight: 700,
+                    textTransform: 'uppercase', letterSpacing: '.12em',
+                    color: 'rgba(169,138,125,.5)', marginBottom: 6,
+                  }}>Formula</div>
+                  <div style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.92rem',
+                    color: cat.a,
+                    letterSpacing: '0.06em',
+                    fontWeight: 600,
+                  }}>{entry.formula}</div>
+                </div>
+              )}
+              {entry.degrees && (
+                <div style={{
+                  background: '#1c1b1b',
+                  border: '1px solid #353534',
+                  padding: '14px 20px',
+                  flex: '1 1 180px',
+                  minWidth: 0,
+                }}>
+                  <div style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.58rem', fontWeight: 700,
+                    textTransform: 'uppercase', letterSpacing: '.12em',
+                    color: 'rgba(169,138,125,.5)', marginBottom: 6,
+                  }}>Degrees</div>
+                  <div style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.92rem',
+                    color: '#e5e2e1',
+                    letterSpacing: '0.08em',
+                    fontWeight: 600,
+                  }}>{entry.degrees}</div>
+                </div>
+              )}
+              {entry.example?.notes?.length > 0 && (
+                <div style={{
+                  background: '#1c1b1b',
+                  border: '1px solid #353534',
+                  padding: '14px 20px',
+                  flex: '1 1 180px',
+                  minWidth: 0,
+                }}>
+                  <div style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.58rem', fontWeight: 700,
+                    textTransform: 'uppercase', letterSpacing: '.12em',
+                    color: 'rgba(169,138,125,.5)', marginBottom: 6,
+                  }}>Example in {entry.example.root}</div>
+                  <div style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.88rem',
+                    color: '#e5e2e1',
+                    letterSpacing: '0.06em',
+                    fontWeight: 600,
+                  }}>{entry.example.notes.join('  ')}</div>
+                </div>
+              )}
+            </div>
+
+            {/* Fretboard diagrams */}
+            {diagrams.length > 0 && (
+              <section aria-labelledby="fretboard-heading" style={{ marginBottom: 40 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                  <p style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.6rem', fontWeight: 700,
+                    color: cat.a, textTransform: 'uppercase', letterSpacing: '0.14em', margin: 0,
+                  }} id="fretboard-heading">Interactive Visualizer</p>
+                  <div style={{ flex: 1, height: 1, background: 'rgba(169,138,125,.08)' }} />
+                </div>
+                <div style={{
+                  background: '#1c1b1b',
+                  border: `1px solid #353534`,
+                  padding: '24px',
+                  display: 'flex', flexDirection: 'column', gap: 20,
+                }}>
+                  {diagrams.map(diagram => (
+                    <div key={diagram.id} style={{
+                      background: 'rgba(0,0,0,.3)',
+                      border: `1px solid ${cat.br}33`,
+                      borderRadius: 4,
+                      padding: '14px 16px',
+                    }}>
+                      <FretboardDiagram diagram={diagram} accentColor={cat.a} />
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Details */}
+            <section aria-labelledby="details-heading" style={{ marginBottom: 40 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+                <h2 id="details-heading" style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: '.6rem', fontWeight: 700,
+                  color: cat.a, textTransform: 'uppercase', letterSpacing: '0.14em', margin: 0,
+                }}>About the {entry.title}</h2>
+                <div style={{ flex: 1, height: 1, background: 'rgba(169,138,125,.08)' }} />
+              </div>
+              {entry.details.split('\n\n').map((para, i) => (
+                <p key={i} style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: '.92rem', color: '#e2bfb0',
+                  lineHeight: 1.75,
+                  marginTop: i > 0 ? 14 : 0, marginBottom: 0,
+                }}>{para}</p>
+              ))}
+            </section>
+
+            {/* Used by genres */}
+            {entry.usedBy && (
+              <section aria-labelledby="genres-heading" style={{ marginBottom: 40 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+                  <h2 id="genres-heading" style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.6rem', fontWeight: 700,
+                    color: cat.a, textTransform: 'uppercase', letterSpacing: '0.14em', margin: 0,
+                  }}>Genres &amp; Contexts</h2>
+                  <div style={{ flex: 1, height: 1, background: 'rgba(169,138,125,.08)' }} />
+                </div>
+                <p style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: '.9rem', color: '#e2bfb0', lineHeight: 1.7,
+                }}>{entry.usedBy}</p>
+              </section>
+            )}
+
+            {/* Diatonic chords */}
+            {entry.chords?.length > 0 && (
+              <section aria-labelledby="chords-heading" style={{ marginBottom: 40 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+                  <h2 id="chords-heading" style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.6rem', fontWeight: 700,
+                    color: cat.a, textTransform: 'uppercase', letterSpacing: '0.14em', margin: 0,
+                  }}>Diatonic Chords</h2>
+                  <div style={{ flex: 1, height: 1, background: 'rgba(169,138,125,.08)' }} />
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {entry.chords.map((ch, i) => (
+                    <span key={i} style={{
+                      fontFamily: "'Inter', system-ui, sans-serif",
+                      fontSize: '.78rem', fontWeight: 600,
+                      color: cat.a, background: cat.b,
+                      border: `1px solid ${cat.br}55`,
+                      borderRadius: 2, padding: '5px 12px',
+                    }}>{ch}</span>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* All 12 keys */}
+            {entry.allKeys?.length > 0 && (
+              <section aria-labelledby="keys-heading" style={{ marginBottom: 48 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6 }}>
+                  <h2 id="keys-heading" style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.6rem', fontWeight: 700,
+                    color: cat.a, textTransform: 'uppercase', letterSpacing: '0.14em', margin: 0,
+                    whiteSpace: 'nowrap',
+                  }}>{entry.title} in All 12 Keys</h2>
+                  <div style={{ flex: 1, height: 1, background: 'rgba(169,138,125,.08)' }} />
+                </div>
+                <p style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: '.76rem', color: 'rgba(169,138,125,.4)',
+                  marginBottom: 14, fontStyle: 'italic',
+                }}>Every key — root note, all tones, diatonic chords.</p>
+                <div style={{
+                  background: '#0e0e0e',
+                  border: '1px solid #353534',
+                  overflow: 'hidden',
+                }}>
+                  <KeyTable entry={entry} cat={cat} />
+                </div>
+              </section>
+            )}
+
+            {/* Pro tip */}
+            {entry.tip && (
+              <section style={{
+                position: 'relative',
+                background: cat.b,
+                border: `1px solid ${cat.br}55`,
+                padding: '20px 24px',
+                marginBottom: 48,
+                overflow: 'hidden',
+              }}>
+                <div style={{
+                  position: 'absolute',
+                  top: -8, right: 16,
+                  fontFamily: 'Georgia, serif',
+                  fontSize: '5rem',
+                  color: cat.a, opacity: 0.06,
+                  lineHeight: 1,
+                  pointerEvents: 'none', userSelect: 'none',
+                }}>&ldquo;</div>
+                <div style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: '.6rem', fontWeight: 700,
+                  textTransform: 'uppercase', letterSpacing: '0.14em',
+                  color: cat.a, marginBottom: 10,
+                  display: 'flex', alignItems: 'center', gap: 6,
+                }}>
+                  <span>◆</span> Pro Tip
+                </div>
+                <p style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontStyle: 'italic',
+                  fontSize: '.9rem', color: '#ffb693',
+                  lineHeight: 1.7, margin: 0,
+                }}>{entry.tip}</p>
+              </section>
+            )}
+
+            {/* Tags */}
+            {entry.tags?.length > 0 && (
+              <div style={{ marginBottom: 48, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {entry.tags.map(tag => (
+                  <span
+                    key={tag}
+                    className="entry-tag"
                     style={{
-                      display: 'block', textDecoration: 'none',
-                      background: '#141210', border: '1px solid rgba(255,255,255,.06)',
-                      borderRadius: 8, padding: '14px 16px',
-                      transition: 'border-color .15s',
+                      fontFamily: "'Inter', system-ui, sans-serif",
+                      fontSize: '.62rem', fontWeight: 600,
+                      color: 'rgba(169,138,125,.45)',
+                      background: 'rgba(169,138,125,.06)',
+                      border: '1px solid rgba(169,138,125,.12)',
+                      borderRadius: 2, padding: '4px 10px',
+                      transition: 'border-color .15s, color .15s',
                     }}
-                  >
-                    <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '.9rem', fontWeight: 700, color: '#f5edda', marginBottom: 4 }}>{r.title}</div>
-                    <div style={{ fontFamily: "'Lora', serif", fontSize: '.72rem', color: 'rgba(255,255,255,.4)', lineHeight: 1.4 }}>{r.summary}</div>
-                  </Link>
+                  >{tag}</span>
                 ))}
               </div>
-            </section>
-          )}
+            )}
 
-          {/* Back link */}
-          <div style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,.06)' }}>
-            <Link href="/" style={{
-              fontFamily: "'Space Mono', monospace", fontSize: '.72rem',
-              color: '#c9a84c', textDecoration: 'none',
+            {/* Practice drill bento */}
+            <section style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+              gap: 16, marginBottom: 48,
             }}>
-              ← Back to Guitar Cheat Sheet
+              <div style={{
+                background: '#1c1b1b',
+                border: '1px solid #353534',
+                padding: '20px 24px',
+                position: 'relative', overflow: 'hidden',
+              }}>
+                <div style={{
+                  position: 'absolute', top: 0, left: 0,
+                  width: 3, height: '100%',
+                  background: cat.a,
+                }} />
+                <p style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: '.6rem', fontWeight: 700,
+                  color: cat.a, textTransform: 'uppercase',
+                  letterSpacing: '0.14em', marginBottom: 10,
+                }}>Practice Drill</p>
+                <h4 style={{
+                  fontFamily: "'Noto Serif', Georgia, serif",
+                  fontSize: '1rem', fontWeight: 600,
+                  color: '#e5e2e1', marginBottom: 8,
+                }}>The All-Keys Sequence</h4>
+                <p style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: '.8rem', color: '#a98a7d',
+                  lineHeight: 1.55, marginBottom: 14,
+                }}>Play the {entry.title} across all 12 keys. Start at 60 BPM, increase by 5 each run.</p>
+              </div>
+
+              {entry.tip && (
+                <div style={{
+                  background: '#1c1b1b',
+                  border: '1px solid #353534',
+                  padding: '20px 24px',
+                }}>
+                  <p style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.6rem', fontWeight: 700,
+                    color: cat.a, textTransform: 'uppercase',
+                    letterSpacing: '0.14em', marginBottom: 10,
+                  }}>Lesson Notes</p>
+                  <p style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontStyle: 'italic',
+                    fontSize: '.84rem', color: 'rgba(226,191,176,.7)',
+                    lineHeight: 1.65, marginBottom: 0,
+                  }}>&ldquo;{entry.tip.length > 160 ? entry.tip.slice(0, 160) + '…' : entry.tip}&rdquo;</p>
+                </div>
+              )}
+            </section>
+
+            {/* Back link */}
+            <Link
+              href={`/${entry.category}`}
+              className="entry-back"
+              style={{
+                fontFamily: "'Inter', system-ui, sans-serif",
+                fontSize: '.72rem', fontWeight: 600,
+                color: 'rgba(169,138,125,.5)',
+                textDecoration: 'none',
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                transition: 'color .15s',
+              }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              All {cat.label}
             </Link>
           </div>
+
+          {/* ── Sidebar (4 cols, desktop only) ── */}
+          <aside
+            className="entry-sidebar"
+            style={{
+              width: 320,
+              flexShrink: 0,
+              position: 'sticky',
+              top: 64,
+              maxHeight: 'calc(100vh - 64px)',
+              overflowY: 'auto',
+              background: '#1c1b1b',
+              borderLeft: '1px solid #353534',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {/* Curriculum header */}
+            <div style={{
+              padding: '16px 20px',
+              borderBottom: '1px solid #353534',
+              background: '#201f1f',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            }}>
+              <span style={{
+                fontFamily: "'Inter', system-ui, sans-serif",
+                fontSize: '.62rem', fontWeight: 700,
+                color: cat.a,
+                textTransform: 'uppercase', letterSpacing: '0.12em',
+              }}>More {cat.label}</span>
+              <span style={{
+                fontFamily: "'Inter', system-ui, sans-serif",
+                fontSize: '.6rem', fontWeight: 600,
+                color: 'rgba(169,138,125,.45)',
+              }}>{related.length} lessons</span>
+            </div>
+
+            {/* Current entry indicator */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 12,
+              padding: '14px 20px',
+              background: `${cat.b}`,
+              borderLeft: `4px solid ${cat.a}`,
+              borderBottom: '1px solid #353534',
+            }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: '.68rem', fontWeight: 700,
+                  color: cat.a,
+                  textTransform: 'uppercase', letterSpacing: '0.06em',
+                  marginBottom: 2, whiteSpace: 'nowrap',
+                  overflow: 'hidden', textOverflow: 'ellipsis',
+                }}>Current</p>
+                <p style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: '.78rem', color: '#e5e2e1',
+                  fontWeight: 600,
+                  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                  margin: 0,
+                }}>{entry.title}</p>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill={cat.a} style={{ flexShrink: 0 }}>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+              </svg>
+            </div>
+
+            {/* Related entries list */}
+            <div style={{ flex: 1, overflowY: 'auto' }}>
+              {related.map((r, i) => (
+                <Link
+                  key={r.id}
+                  href={`/${r.category}/${r.id}`}
+                  className="entry-related-item"
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 12,
+                    padding: '12px 20px',
+                    textDecoration: 'none',
+                    borderBottom: '1px solid rgba(53,53,52,.5)',
+                    borderLeft: '3px solid transparent',
+                    transition: 'background .15s, border-left-color .15s',
+                    background: 'transparent',
+                  }}
+                >
+                  <span style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '.68rem', fontWeight: 700,
+                    color: 'rgba(169,138,125,.3)',
+                    minWidth: 24, flexShrink: 0,
+                  }}>{String(i + 1).padStart(2, '0')}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p
+                      className="entry-related-title"
+                      style={{
+                        fontFamily: "'Inter', system-ui, sans-serif",
+                        fontSize: '.76rem', fontWeight: 600,
+                        color: '#e5e2e1',
+                        textTransform: 'uppercase', letterSpacing: '0.04em',
+                        marginBottom: 2,
+                        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                        transition: 'color .15s',
+                      }}
+                    >{r.title}</p>
+                    <p style={{
+                      fontFamily: "'Inter', system-ui, sans-serif",
+                      fontSize: '.68rem', color: 'rgba(169,138,125,.5)',
+                      whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                      margin: 0,
+                    }}>{r.summary.slice(0, 55)}{r.summary.length > 55 ? '…' : ''}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <div style={{ padding: '16px 20px', borderTop: '1px solid #353534', background: '#201f1f' }}>
+              <Link
+                href={`/${entry.category}`}
+                style={{
+                  display: 'block',
+                  background: cat.a,
+                  color: '#000',
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: '.68rem', fontWeight: 700,
+                  textTransform: 'uppercase', letterSpacing: '0.1em',
+                  textDecoration: 'none',
+                  padding: '12px 16px',
+                  textAlign: 'center',
+                  transition: 'opacity .15s',
+                  boxShadow: `0 0 16px ${cat.a}33`,
+                }}
+              >
+                Browse All {cat.label} →
+              </Link>
+            </div>
+          </aside>
+
         </div>
       </main>
     </>

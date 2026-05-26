@@ -1,4 +1,5 @@
 'use client'
+import { Search, X } from 'lucide-react'
 
 interface SearchBarProps {
   query: string
@@ -16,15 +17,15 @@ export default function SearchBar({ query, onChange, quickSearches, onQuick, isS
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
         <span style={{
           position: 'absolute',
-          left: 14,
-          color: hasQuery ? 'rgba(240,201,58,.6)' : 'rgba(255,255,255,.2)',
+          left: 13,
+          color: hasQuery ? '#ff6b00' : 'rgba(169,138,125,.4)',
           pointerEvents: 'none',
           lineHeight: 1,
           transition: 'color .2s',
+          display: 'flex',
+          alignItems: 'center',
         }}>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
+          <Search size={15} />
         </span>
 
         <input
@@ -34,27 +35,35 @@ export default function SearchBar({ query, onChange, quickSearches, onQuick, isS
           placeholder="Search scales, modes, chords, techniques…"
           style={{
             width: '100%',
-            background: hasQuery ? 'rgba(240,201,58,.04)' : 'rgba(255,255,255,.03)',
-            border: hasQuery ? '1px solid rgba(240,201,58,.35)' : '1px solid rgba(255,255,255,.08)',
-            borderRadius: 10,
-            padding: '13px 42px 13px 44px',
-            fontFamily: "'Space Mono', monospace",
+            background: hasQuery
+              ? 'rgba(255,107,0,.05)'
+              : 'rgba(30,29,28,.8)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            border: hasQuery
+              ? '1px solid rgba(255,107,0,.3)'
+              : '1px solid rgba(169,138,125,.12)',
+            borderRadius: 6,
+            padding: '13px 42px 13px 42px',
+            fontFamily: "'Inter', system-ui, sans-serif",
             fontSize: '.8rem',
-            color: '#f0e6c8',
+            color: '#e5e2e1',
             outline: 'none',
-            boxShadow: hasQuery ? '0 0 0 3px rgba(240,201,58,.08)' : 'none',
+            boxShadow: hasQuery
+              ? '0 0 0 3px rgba(255,107,0,.07), inset 0 1px 0 rgba(255,182,147,.05)'
+              : 'inset 0 1px 0 rgba(255,255,255,.03)',
             transition: 'border-color .2s, box-shadow .2s, background .2s',
           }}
           onFocus={e => {
             if (!hasQuery) {
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,.18)'
-              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(255,255,255,.04)'
+              e.currentTarget.style.borderColor = 'rgba(169,138,125,.25)'
+              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(169,138,125,.06), inset 0 1px 0 rgba(255,255,255,.03)'
             }
           }}
           onBlur={e => {
             if (!hasQuery) {
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,.08)'
-              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.borderColor = 'rgba(169,138,125,.12)'
+              e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,.03)'
             }
           }}
         />
@@ -65,32 +74,40 @@ export default function SearchBar({ query, onChange, quickSearches, onQuick, isS
             style={{
               position: 'absolute',
               right: 10,
-              width: 24,
-              height: 24,
+              width: 22,
+              height: 22,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: 'rgba(255,255,255,.08)',
-              border: '1px solid rgba(255,255,255,.1)',
+              background: 'rgba(169,138,125,.1)',
+              border: '1px solid rgba(169,138,125,.15)',
               borderRadius: '50%',
-              color: 'rgba(255,255,255,.5)',
-              fontSize: '.7rem',
+              color: '#a98a7d',
               cursor: 'pointer',
-              transition: 'background .15s',
+              transition: 'background .12s, color .12s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.15)' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.08)' }}
-          >✕</button>
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'rgba(255,107,0,.12)'
+              e.currentTarget.style.color = '#ff6b00'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'rgba(169,138,125,.1)'
+              e.currentTarget.style.color = '#a98a7d'
+            }}
+          >
+            <X size={11} />
+          </button>
         )}
       </div>
 
       <p style={{
-        fontFamily: "'Space Mono', monospace",
+        fontFamily: "'Inter', system-ui, sans-serif",
         fontSize: '.57rem',
-        color: 'rgba(255,255,255,.16)',
+        color: 'rgba(169,138,125,.3)',
         marginTop: 8,
         textAlign: 'center',
-        letterSpacing: '0.03em',
+        letterSpacing: '0.04em',
+        textTransform: 'uppercase',
       }}>Try: pentatonic · vibrato · jazz · Phrygian · suspend · Keith Richards</p>
 
       {!isSearching && (
@@ -103,11 +120,11 @@ export default function SearchBar({ query, onChange, quickSearches, onQuick, isS
           alignItems: 'center',
         }}>
           <span style={{
-            fontFamily: "'Space Mono', monospace",
+            fontFamily: "'Inter', system-ui, sans-serif",
             fontSize: '.57rem',
-            color: 'rgba(255,255,255,.18)',
+            color: 'rgba(169,138,125,.3)',
             marginRight: 2,
-            letterSpacing: '0.06em',
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
           }}>Quick:</span>
           {quickSearches.map(q => (
@@ -115,26 +132,26 @@ export default function SearchBar({ query, onChange, quickSearches, onQuick, isS
               key={q}
               onClick={() => onQuick(q)}
               style={{
-                fontFamily: "'Space Mono', monospace",
+                fontFamily: "'Inter', system-ui, sans-serif",
                 fontSize: '.6rem',
-                background: 'rgba(255,255,255,.03)',
-                border: '1px solid rgba(255,255,255,.08)',
-                borderRadius: 14,
+                background: 'rgba(169,138,125,.05)',
+                border: '1px solid rgba(169,138,125,.1)',
+                borderRadius: 4,
                 padding: '4px 10px',
-                color: 'rgba(255,255,255,.3)',
+                color: 'rgba(169,138,125,.45)',
                 cursor: 'pointer',
-                transition: 'all .15s',
-                letterSpacing: '0.02em',
+                transition: 'all .12s',
+                letterSpacing: '0.04em',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.borderColor = 'rgba(240,201,58,.35)'
-                e.currentTarget.style.color = '#f0c93a'
-                e.currentTarget.style.background = 'rgba(240,201,58,.06)'
+                e.currentTarget.style.borderColor = 'rgba(255,107,0,.3)'
+                e.currentTarget.style.color = '#ff6b00'
+                e.currentTarget.style.background = 'rgba(255,107,0,.07)'
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,.08)'
-                e.currentTarget.style.color = 'rgba(255,255,255,.3)'
-                e.currentTarget.style.background = 'rgba(255,255,255,.03)'
+                e.currentTarget.style.borderColor = 'rgba(169,138,125,.1)'
+                e.currentTarget.style.color = 'rgba(169,138,125,.45)'
+                e.currentTarget.style.background = 'rgba(169,138,125,.05)'
               }}
             >{q}</button>
           ))}

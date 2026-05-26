@@ -3,185 +3,203 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { CATEGORY_CONFIG } from '../data/categories'
-import { FONT, FS, BG, COLOR, PAD, RADIUS } from '../theme'
+import { Menu, X, Search } from 'lucide-react'
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false)
 
   return (
     <>
-      <header style={{
-        background: BG.header,
-        borderBottom: '1px solid rgba(255,255,255,.06)',
-        padding: '0 16px',
-        position: 'sticky', top: 0, zIndex: 50,
-      }}>
-        <style>{`
-          .gcs-brand-full  { display: inline; }
-          .gcs-brand-short { display: none; }
-          .gcs-hamburger   { display: none !important; }
-
-          @media (max-width: 639px) {
-            .gcs-brand-full    { display: none; }
-            .gcs-brand-short   { display: inline; }
-            .gcs-nav-desktop   { display: none !important; }
-            .gcs-hamburger     { display: flex !important; }
-          }
-
-          .gcs-hamburger {
-            background: none;
-            border: 1px solid rgba(255,255,255,.1);
-            cursor: pointer;
-            padding: 9px 10px;
-            color: rgba(255,255,255,.55);
-            align-items: center;
-            justify-content: center;
-            border-radius: ${RADIUS.lg}px;
-            transition: background .15s, border-color .15s, color .15s;
-            flex-shrink: 0;
-          }
-          .gcs-hamburger:hover {
-            background: rgba(255,255,255,.06);
-            border-color: rgba(201,168,76,.35);
-            color: ${COLOR.brand};
-          }
-          .gcs-hamburger[aria-expanded="true"] {
-            background: rgba(201,168,76,.08);
-            border-color: rgba(201,168,76,.4);
-            color: ${COLOR.brand};
-          }
-
-          .gcs-mobile-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 22px;
-            height: 58px;
-            font-family: ${FONT.mono};
-            font-size: ${FS.base};
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .1em;
-            text-decoration: none;
-            color: rgba(255,255,255,.5);
-            border-left: 3px solid transparent;
-            transition: background .15s, color .15s, border-color .15s;
-          }
-          .gcs-mobile-link:hover {
-            background: rgba(255,255,255,.04);
-            color: rgba(255,255,255,.9);
-          }
-          .gcs-mobile-link:active {
-            background: rgba(255,255,255,.07);
-          }
-          .gcs-mobile-divider {
-            height: 1px;
-            margin: 4px 18px;
-            background: rgba(255,255,255,.05);
-          }
-        `}</style>
-
+      <header
+        className="gcs-header"
+        style={{
+          background: 'rgba(14,14,14,0.96)',
+          borderBottom: '1px solid #353534',
+          position: 'sticky', top: 0, zIndex: 100,
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          boxShadow: 'inset 0 -1px 0 rgba(255,182,147,0.04)',
+        }}
+      >
         <div style={{
-          maxWidth: 1100, margin: '0 auto',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          height: 66,
+          maxWidth: 1280, margin: '0 auto',
+          display: 'flex', alignItems: 'center',
+          padding: '0 20px', height: 64,
         }}>
 
-          {/* ── Brand Logo ── */}
+          {/* ── Hamburger (mobile only — LEFT of brand) ── */}
+          <button
+            className="gcs-hamburger"
+            onClick={() => setOpen(o => !o)}
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            style={{
+              display: 'none',
+              background: 'none',
+              border: '1px solid rgba(169,138,125,.2)',
+              padding: '7px 8px',
+              color: '#a98a7d',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 4,
+              transition: 'border-color .15s, color .15s',
+              cursor: 'pointer',
+              flexShrink: 0,
+              marginRight: 12,
+            }}
+          >
+            {open ? <X size={16} /> : <Menu size={16} />}
+          </button>
+
+          {/* ── Brand ── */}
           <Link href="/" onClick={() => setOpen(false)} style={{
-            display: 'flex', alignItems: 'center', gap: 7,
             textDecoration: 'none', flexShrink: 0,
           }}>
-            {/* favicon.svg — identical to browser tab icon */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/favicon.svg"
-              alt=""
-              aria-hidden="true"
-              width={42}
-              height={42}
-              style={{ display: 'block', borderRadius: '50%' }}
-            />
-
             <span style={{
-              fontFamily: FONT.display,
-              fontSize: FS.title, fontWeight: 900, color: COLOR.brand,
-              letterSpacing: '-.01em', lineHeight: 1,
+              fontFamily: "'Noto Serif', Georgia, serif",
+              fontSize: '0.9rem',
+              fontWeight: 700,
+              color: '#ff6b00',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              lineHeight: 1,
             }}>
               <span className="gcs-brand-full">Guitar Cheat Sheet</span>
               <span className="gcs-brand-short">GCS</span>
             </span>
           </Link>
 
-          {/* ── Desktop nav ── */}
-          <nav className="gcs-nav-desktop" aria-label="Main navigation" style={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          {/* ── Flex spacer ── */}
+          <div style={{ flex: 1 }} />
+
+          {/* ── Desktop nav (right-aligned) ── */}
+          <nav
+            className="gcs-nav-desktop"
+            aria-label="Main navigation"
+            style={{ display: 'flex', alignItems: 'center', gap: 0 }}
+          >
             {Object.entries(CATEGORY_CONFIG).map(([slug, cat]) => (
               <Link
                 key={slug}
                 href={`/${slug}`}
                 style={{
-                  fontFamily: FONT.mono,
-                  fontSize: FS.base, fontWeight: 700,
-                  textTransform: 'uppercase', letterSpacing: '.06em',
-                  color: COLOR.muted,
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: '0.62rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: '#a98a7d',
                   textDecoration: 'none',
-                  padding: PAD.navItem,
-                  borderRadius: RADIUS.sm,
-                  transition: 'color .15s, background .15s',
+                  padding: '6px 10px',
+                  borderRadius: 4,
+                  transition: 'color .15s',
+                  whiteSpace: 'nowrap',
                 }}
+                onMouseEnter={e => { e.currentTarget.style.color = '#ff6b00' }}
+                onMouseLeave={e => { e.currentTarget.style.color = '#a98a7d' }}
               >
                 {cat.label}
               </Link>
             ))}
+            <span style={{ width: 1, height: 16, background: 'rgba(169,138,125,.15)', margin: '0 8px' }} />
             <Link
               href="/about"
               style={{
-                fontFamily: FONT.mono,
-                fontSize: FS.base, fontWeight: 700,
-                textTransform: 'uppercase', letterSpacing: '.06em',
-                color: 'rgba(255,255,255,.35)',
+                fontFamily: "'Inter', system-ui, sans-serif",
+                fontSize: '0.62rem',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                color: 'rgba(169,138,125,.45)',
                 textDecoration: 'none',
-                padding: PAD.navItem,
-                borderRadius: RADIUS.sm,
+                padding: '6px 10px',
+                borderRadius: 4,
+                transition: 'color .15s',
               }}
+              onMouseEnter={e => { e.currentTarget.style.color = '#ff6b00' }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(169,138,125,.45)' }}
             >
               About
             </Link>
           </nav>
 
-          {/* ── Hamburger (mobile only) ── */}
+          {/* ── Search icon (mobile only — RIGHT) ── */}
           <button
-            className="gcs-hamburger"
-            onClick={() => setOpen(o => !o)}
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
+            aria-label="Search"
+            className="gcs-search-btn"
+            style={{
+              display: 'none',
+              background: 'none', border: 'none',
+              color: '#a98a7d', padding: 8, cursor: 'pointer',
+              transition: 'color .15s', alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#ff6b00' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#a98a7d' }}
           >
-            <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
-              {open ? (
-                <>
-                  <line x1="1" y1="1" x2="17" y2="13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-                  <line x1="17" y1="1" x2="1" y2="13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-                </>
-              ) : (
-                <>
-                  <line x1="1" y1="1"  x2="17" y2="1"  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-                  <line x1="1" y1="7"  x2="17" y2="7"  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-                  <line x1="1" y1="13" x2="17" y2="13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-                </>
-              )}
-            </svg>
+            <Search size={18} />
           </button>
         </div>
+
+        <style>{`
+          .gcs-brand-full  { display: inline; }
+          .gcs-brand-short { display: none; }
+
+          @media (max-width: 767px) {
+            .gcs-brand-full    { display: none; }
+            .gcs-brand-short   { display: inline; }
+            .gcs-nav-desktop   { display: none !important; }
+            .gcs-hamburger     { display: flex !important; }
+            .gcs-search-btn    { display: flex !important; }
+          }
+
+          .gcs-hamburger:hover {
+            border-color: rgba(255,107,0,.4) !important;
+            color: #ff6b00 !important;
+          }
+          .gcs-hamburger[aria-expanded="true"] {
+            border-color: rgba(255,107,0,.45) !important;
+            color: #ff6b00 !important;
+          }
+
+          .gcs-mobile-link {
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            height: 52px;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            text-decoration: none;
+            color: #a98a7d;
+            border-left: 3px solid transparent;
+            transition: background .12s, color .12s, border-color .12s;
+          }
+          .gcs-mobile-link:hover {
+            background: rgba(255,107,0,.05);
+            color: #ffb693;
+          }
+          .gcs-mobile-divider {
+            height: 1px;
+            margin: 4px 20px;
+            background: rgba(169,138,125,.1);
+          }
+        `}</style>
       </header>
 
-      {/* ── Mobile menu panel ── */}
+      {/* ── Mobile dropdown menu ── */}
       {open && (
         <nav
+          className="gcs-header"
           aria-label="Mobile navigation"
           style={{
-            background: BG.mobileMenu,
-            borderBottom: '1px solid rgba(201,168,76,.12)',
-            position: 'sticky', top: 66, zIndex: 49,
+            background: 'rgba(14,14,14,0.98)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            borderBottom: '1px solid rgba(255,107,0,.1)',
+            position: 'sticky', top: 64, zIndex: 99,
           }}
         >
           {Object.entries(CATEGORY_CONFIG).map(([slug, cat]) => (
@@ -199,7 +217,7 @@ export default function SiteHeader() {
           <Link
             href="/about"
             className="gcs-mobile-link"
-            style={{ borderLeftColor: 'rgba(255,255,255,.12)' }}
+            style={{ borderLeftColor: 'transparent' }}
             onClick={() => setOpen(false)}
           >
             About

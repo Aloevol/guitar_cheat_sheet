@@ -1,13 +1,14 @@
 'use client'
 import { PAL } from '../data/guitarData'
 import { FRETBOARDS } from '../data/fretboards'
-import { FONT, FS, BG, COLOR, PAD, RADIUS } from '../theme'
+import { FONT, FS, COLOR, PAD, RADIUS } from '../theme'
 import type { GuitarEntry } from '../types'
 import NotePill from './NotePill'
 import FormulaSteps from './FormulaSteps'
 import KeysPanel from './KeysPanel'
 import SectionLabel from './SectionLabel'
 import FretboardDiagram from './FretboardDiagram'
+import { ChevronDown } from 'lucide-react'
 
 interface CardProps {
   item: GuitarEntry
@@ -25,32 +26,36 @@ export default function Card({ item, open, onToggle }: CardProps) {
     <div
       onClick={onToggle}
       style={{
-        background: open ? BG.cardOpen : BG.card,
-        border: `1px solid ${open ? p.br : 'rgba(255,255,255,.06)'}`,
-        borderRadius: RADIUS.xxl,
+        background: open
+          ? 'rgba(38, 35, 33, 0.85)'
+          : 'rgba(30, 29, 28, 0.8)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: `1px solid ${open ? `${p.br}55` : 'rgba(169,138,125,.1)'}`,
+        borderRadius: RADIUS.xl,
         overflow: 'hidden',
         cursor: 'pointer',
-        transition: 'border-color .2s, box-shadow .2s, background .2s, transform .15s',
+        transition: 'border-color .2s, box-shadow .2s, background .2s, transform .12s',
         boxShadow: open
-          ? `0 0 0 1px ${p.br}, 0 8px 32px rgba(0,0,0,.5)`
-          : '0 2px 12px rgba(0,0,0,.35)',
+          ? `0 0 0 1px ${p.br}44, 0 8px 32px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,182,147,.06)`
+          : '0 2px 12px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,182,147,.05)',
         transform: open ? 'translateY(-1px)' : 'translateY(0)',
       }}
       onMouseEnter={e => {
         if (!open) {
-          e.currentTarget.style.borderColor = 'rgba(255,255,255,.12)'
-          e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,.4)'
+          e.currentTarget.style.borderColor = 'rgba(169,138,125,.2)'
+          e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,182,147,.06)'
         }
       }}
       onMouseLeave={e => {
         if (!open) {
-          e.currentTarget.style.borderColor = 'rgba(255,255,255,.06)'
-          e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,.35)'
+          e.currentTarget.style.borderColor = 'rgba(169,138,125,.1)'
+          e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,182,147,.05)'
         }
       }}
     >
       {/* Top accent bar */}
-      <div style={{ height: 2, background: `linear-gradient(90deg, ${p.a}, ${p.a}88, transparent)` }} />
+      <div style={{ height: 2, background: `linear-gradient(90deg, ${p.a}, ${p.a}66, transparent)` }} />
 
       {/* Card header */}
       <div style={{ padding: PAD.cardHeader }}>
@@ -64,17 +69,17 @@ export default function Card({ item, open, onToggle }: CardProps) {
               letterSpacing: '0.1em',
               color: p.a,
               background: p.b,
-              border: `1px solid ${p.br}`,
+              border: `1px solid ${p.br}55`,
               borderRadius: RADIUS.sm,
-              padding: '4px 10px',
+              padding: '3px 9px',
             }}>{p.label}</span>
             {item.example?.root && (
               <span style={{
                 fontFamily: FONT.mono,
                 fontSize: FS.xxs,
-                color: 'rgba(255,255,255,.35)',
-                background: 'rgba(255,255,255,.05)',
-                border: '1px solid rgba(255,255,255,.09)',
+                color: '#a98a7d',
+                background: 'rgba(169,138,125,.07)',
+                border: '1px solid rgba(169,138,125,.12)',
                 borderRadius: RADIUS.xs,
                 padding: '3px 7px',
               }}>ex. {item.example.root}</span>
@@ -83,28 +88,30 @@ export default function Card({ item, open, onToggle }: CardProps) {
           <div
             onClick={e => { e.stopPropagation(); onToggle() }}
             style={{
-              width: 26,
-              height: 26,
+              width: 24,
+              height: 24,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: '50%',
-              background: open ? p.b : 'rgba(255,255,255,.04)',
-              border: open ? `1px solid ${p.br}` : '1px solid rgba(255,255,255,.07)',
-              color: open ? p.a : 'rgba(255,255,255,.35)',
-              fontSize: FS.base,
+              background: open ? p.b : 'rgba(169,138,125,.06)',
+              border: open ? `1px solid ${p.br}44` : '1px solid rgba(169,138,125,.1)',
+              color: open ? p.a : '#a98a7d',
               transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
               transition: 'transform .2s, background .2s, border-color .2s, color .2s',
               cursor: 'pointer',
+              flexShrink: 0,
             }}
-          >▾</div>
+          >
+            <ChevronDown size={14} />
+          </div>
         </div>
 
         <div style={{
           fontFamily: FONT.display,
           fontSize: FS.title,
-          fontWeight: 800,
-          color: COLOR.heading,
+          fontWeight: 700,
+          color: '#e5e2e1',
           marginBottom: 6,
           lineHeight: 1.25,
           letterSpacing: '-.01em',
@@ -113,8 +120,8 @@ export default function Card({ item, open, onToggle }: CardProps) {
         <div style={{
           fontFamily: FONT.body,
           fontSize: FS.body,
-          color: COLOR.body,
-          lineHeight: 1.55,
+          color: '#e2bfb0',
+          lineHeight: 1.6,
           marginBottom: shortNotes && item.example?.notes?.length ? 10 : 0,
         }}>{item.summary}</div>
 
@@ -132,8 +139,8 @@ export default function Card({ item, open, onToggle }: CardProps) {
         <div
           onClick={e => e.stopPropagation()}
           style={{
-            borderTop: '1px solid rgba(255,255,255,.05)',
-            background: BG.cardBody,
+            borderTop: '1px solid rgba(169,138,125,.08)',
+            background: 'rgba(20,19,18,.6)',
             padding: PAD.cardBody,
           }}
         >
@@ -145,8 +152,8 @@ export default function Card({ item, open, onToggle }: CardProps) {
                   <div
                     key={diagram.id}
                     style={{
-                      background: 'rgba(0,0,0,.35)',
-                      border: `1px solid ${p.br}`,
+                      background: 'rgba(0,0,0,.4)',
+                      border: `1px solid ${p.br}33`,
                       borderRadius: RADIUS.xl,
                       padding: '14px 16px',
                     }}
@@ -169,10 +176,10 @@ export default function Card({ item, open, onToggle }: CardProps) {
               <div style={{
                 fontFamily: FONT.mono,
                 fontSize: FS.monoLg,
-                color: 'rgba(255,255,255,.62)',
-                letterSpacing: '0.1em',
-                background: 'rgba(255,255,255,.04)',
-                border: '1px solid rgba(255,255,255,.08)',
+                color: '#e2bfb0',
+                letterSpacing: '0.08em',
+                background: 'rgba(169,138,125,.05)',
+                border: '1px solid rgba(169,138,125,.1)',
                 borderRadius: RADIUS.lg,
                 padding: '11px 15px',
               }}>{item.degrees}</div>
@@ -204,11 +211,11 @@ export default function Card({ item, open, onToggle }: CardProps) {
                   <span key={i} style={{
                     fontFamily: FONT.mono,
                     fontSize: FS.base,
-                    padding: '6px 12px',
+                    padding: '5px 11px',
                     borderRadius: RADIUS.md,
-                    background: 'rgba(255,255,255,.07)',
-                    border: '1px solid rgba(255,255,255,.18)',
-                    color: 'rgba(255,255,255,.78)',
+                    background: 'rgba(169,138,125,.08)',
+                    border: '1px solid rgba(169,138,125,.16)',
+                    color: '#e2bfb0',
                   }}>{c}</span>
                 ))}
               </div>
@@ -222,23 +229,25 @@ export default function Card({ item, open, onToggle }: CardProps) {
                 <span key={i} style={{
                   fontFamily: FONT.mono,
                   fontSize: FS.base,
-                  padding: '5px 11px',
-                  borderRadius: RADIUS.xxl,
+                  padding: '4px 10px',
+                  borderRadius: RADIUS.sm,
                   background: p.b,
-                  border: `1px solid ${p.br}`,
+                  border: `1px solid ${p.br}44`,
                   color: p.a,
                 }}>{g}</span>
               ))}
             </div>
           </div>
 
+          {/* Pro tip */}
           <div style={{
             position: 'relative',
-            background: `linear-gradient(135deg, ${p.b}, rgba(0,0,0,.2))`,
-            border: `1px solid ${p.br}`,
+            background: `linear-gradient(135deg, ${p.b}, rgba(0,0,0,.15))`,
+            border: `1px solid ${p.br}44`,
             borderRadius: RADIUS.xl,
             padding: PAD.proTip,
             overflow: 'hidden',
+            boxShadow: 'inset 0 1px 0 rgba(255,182,147,.05)',
           }}>
             <div style={{
               position: 'absolute',
@@ -246,7 +255,7 @@ export default function Card({ item, open, onToggle }: CardProps) {
               fontFamily: 'Georgia, serif',
               fontSize: '4rem',
               color: p.a,
-              opacity: 0.07,
+              opacity: 0.06,
               lineHeight: 1,
               pointerEvents: 'none',
               userSelect: 'none',

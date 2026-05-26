@@ -10,22 +10,26 @@
   }
 
   :root {
-    --bg:      #0a0806;
+    /* ── Backgrounds ── */
+    --bg:      #131313;
     --bg2:     #0d0b08;
-    --bg3:     #111009;
-    --surface: #141210;
-    --card:    #181510;
-    --card2:   #1a1712;
+    --bg3:     #0e0e0e;
+    --surface: #1c1b1b;
+    --card:    #201f1f;
+    --card2:   #2a2727;
 
-    --border:  rgba(255,255,255,.06);
-    --border2: rgba(255,255,255,.1);
-    --border3: rgba(255,255,255,.16);
+    /* ── Borders ── */
+    --border:  rgba(169,138,125,.1);
+    --border2: rgba(169,138,125,.18);
+    --border3: rgba(169,138,125,.28);
 
-    --gold:    #c9a84c;
-    --gold-l:  #f0c93a;
-    --gold-xl: #f5d878;
-    --amber:   #d4842a;
+    /* ── Ember palette ── */
+    --ember:     #ff6b00;   /* primary-container */
+    --ember-l:   #ffb693;   /* primary */
+    --amber:     #ffdb9d;   /* secondary */
+    --ember-dim: rgba(255,107,0,.12);
 
+    /* ── Category accents (unchanged — data layer) ── */
     --scales:       #f0c93a;
     --modes:        #5fd3c8;
     --chords:       #6eb4ff;
@@ -34,19 +38,19 @@
     --theory:       #4dd98a;
     --tunings:      #ff6b8a;
 
-    --cream:  #f5edda;
-    --text:   rgba(255,255,255,.8);
-    --muted:  rgba(255,255,255,.45);
-    --muted2: rgba(255,255,255,.25);
-    --muted3: rgba(255,255,255,.14);
+    /* ── Text ── */
+    --text:   #e5e2e1;
+    --muted:  #e2bfb0;
+    --muted2: #a98a7d;
+    --muted3: rgba(169,138,125,.4);
   }
 
   html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
-    color: var(--cream);
-    font-family: 'Lora', Georgia, serif;
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -59,15 +63,65 @@
 
   ::-webkit-scrollbar       { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
+  ::-webkit-scrollbar-thumb { background: rgba(169,138,125,.15); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(169,138,125,.25); }
 
-  ::selection { background: rgba(240,201,58,.2); color: var(--cream); }
+  ::selection { background: rgba(255,107,0,.18); color: var(--text); }
+}
+
+/* ── Responsive nav visibility ── */
+/* Top header: desktop only */
+@media (max-width: 767px) {
+  .gcs-header { display: none !important; }
+}
+
+/* Bottom nav: mobile only */
+.mobile-bottom-nav { display: none !important; }
+@media (max-width: 767px) {
+  .mobile-bottom-nav { display: flex !important; }
+  body { padding-bottom: 64px; }
+}
+
+/* Mobile brand bar on home page: visible only when header is hidden */
+.mobile-brand-bar { display: none !important; }
+@media (max-width: 767px) {
+  .mobile-brand-bar { display: flex !important; }
 }
 
 @layer components {
+  /* ── Glass effects ── */
+  .glass-card {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(169, 138, 125, 0.1);
+  }
+
+  .glass-panel {
+    background: rgba(28, 27, 27, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(169, 138, 125, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .milled-edge {
+    box-shadow: inset 0 1px 0 0 rgba(255, 182, 147, 0.08);
+  }
+
+  /* ── Label caps ── */
+  .label-caps {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
   .cat-badge {
-    @apply inline-flex items-center font-mono text-[0.58rem] font-bold uppercase tracking-widest rounded px-[7px] py-[2px] border;
+    @apply inline-flex items-center font-bold uppercase tracking-widest rounded px-[7px] py-[2px] border;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.62rem;
   }
 
   .section-label {
@@ -75,14 +129,28 @@
   }
 
   .note-pill {
-    @apply inline-flex items-center justify-center font-mono text-[0.82rem] font-semibold px-[11px] py-[5px] rounded-md border-[1.5px] min-w-[32px] text-center leading-none tracking-[0.02em];
+    @apply inline-flex items-center justify-center font-bold px-[11px] py-[5px] rounded border min-w-[32px] text-center leading-none;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
   }
 
   .key-btn {
-    @apply font-mono text-[0.65rem] font-bold px-2 py-[5px] rounded border-[1.5px] min-w-[36px] cursor-pointer transition-all duration-100;
+    @apply font-bold px-2 py-[5px] rounded border min-w-[36px] cursor-pointer transition-all duration-100;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.65rem;
   }
 
   .quick-pill {
-    @apply font-mono text-[0.6rem] bg-white/[0.03] border border-white/[0.08] rounded-[14px] px-[10px] py-1 text-white/30 cursor-pointer transition-all duration-150 tracking-[0.02em];
+    @apply bg-white/[0.03] border border-white/[0.06] rounded px-[10px] py-1 cursor-pointer transition-all duration-150;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.6rem;
+    color: rgba(226, 191, 176, 0.3);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Ember glow utility ── */
+  .ember-glow {
+    text-shadow: 0 0 20px rgba(255, 107, 0, 0.35);
   }
 }

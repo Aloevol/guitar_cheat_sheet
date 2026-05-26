@@ -16,7 +16,7 @@ export default function SectionLabel({ children, accent }: SectionLabelProps) {
         letterSpacing: '0.13em',
         color: accent || COLOR.faint,
       }}>{children}</span>
-      <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,.05)' }} />
+      <div style={{ flex: 1, height: 1, background: 'rgba(169,138,125,.08)' }} />
     </div>
   )
 }

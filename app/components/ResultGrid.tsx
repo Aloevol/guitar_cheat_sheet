@@ -1,7 +1,8 @@
 'use client'
-import { FONT, FS, COLOR, RADIUS } from '../theme'
+import { FONT, FS, RADIUS } from '../theme'
 import type { GuitarEntry, CategoryConfigMap } from '../types'
 import Card from './Card'
+import { X } from 'lucide-react'
 
 interface ResultGridProps {
   items: GuitarEntry[]
@@ -15,7 +16,9 @@ interface ResultGridProps {
 
 export default function ResultGrid({ items, query, cat, openIds, onToggle, onClear, pal }: ResultGridProps) {
   const label = cat !== 'all' ? pal[cat as keyof CategoryConfigMap]?.label : 'All Topics'
-  const catColor = cat !== 'all' ? pal[cat as keyof CategoryConfigMap]?.a : '#f0c93a'
+  const catColor = cat !== 'all' ? pal[cat as keyof CategoryConfigMap]?.a : '#ff6b00'
+  const catBg    = cat !== 'all' ? pal[cat as keyof CategoryConfigMap]?.b : 'rgba(255,107,0,.1)'
+  const catBr    = cat !== 'all' ? pal[cat as keyof CategoryConfigMap]?.br : 'rgba(255,107,0,.3)'
   const queryLabel = query.trim()
 
   return (
@@ -28,7 +31,7 @@ export default function ResultGrid({ items, query, cat, openIds, onToggle, onCle
         gap: 8,
         marginBottom: 24,
         paddingBottom: 14,
-        borderBottom: '1px solid rgba(255,255,255,.05)',
+        borderBottom: '1px solid rgba(169,138,125,.07)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <span style={{
@@ -36,18 +39,18 @@ export default function ResultGrid({ items, query, cat, openIds, onToggle, onCle
             fontSize: FS.monoLg,
             fontWeight: 700,
             color: catColor,
-            background: cat !== 'all' ? pal[cat as keyof CategoryConfigMap]?.b : 'rgba(240,201,58,.1)',
-            border: `1px solid ${cat !== 'all' ? pal[cat as keyof CategoryConfigMap]?.br : 'rgba(240,201,58,.25)'}`,
-            borderRadius: RADIUS.md,
+            background: catBg,
+            border: `1px solid ${catBr}55`,
+            borderRadius: RADIUS.sm,
             padding: '3px 10px',
           }}>{items.length} result{items.length !== 1 ? 's' : ''}</span>
 
           <span style={{
             fontFamily: FONT.mono,
             fontSize: FS.keys,
-            color: COLOR.muted,
+            color: '#a98a7d',
           }}>
-            in <span style={{ color: 'rgba(255,255,255,.7)' }}>{label}</span>
+            in <span style={{ color: '#e2bfb0' }}>{label}</span>
             {queryLabel && (
               <> for <span style={{ color: catColor }}>&ldquo;{queryLabel}&rdquo;</span></>
             )}
@@ -59,46 +62,55 @@ export default function ResultGrid({ items, query, cat, openIds, onToggle, onCle
           style={{
             fontFamily: FONT.mono,
             fontSize: FS.base,
-            background: 'rgba(255,255,255,.05)',
-            border: '1px solid rgba(255,255,255,.12)',
-            color: 'rgba(255,255,255,.5)',
-            borderRadius: RADIUS.lg,
-            padding: '7px 15px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 5,
+            background: 'rgba(169,138,125,.07)',
+            border: '1px solid rgba(169,138,125,.14)',
+            color: '#a98a7d',
+            borderRadius: RADIUS.sm,
+            padding: '6px 14px',
             cursor: 'pointer',
-            transition: 'all .15s',
-            letterSpacing: '0.04em',
+            transition: 'all .12s',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
           }}
           onMouseEnter={e => {
-            e.currentTarget.style.background = 'rgba(255,255,255,.08)'
-            e.currentTarget.style.color = 'rgba(255,255,255,.7)'
+            e.currentTarget.style.background = 'rgba(255,107,0,.08)'
+            e.currentTarget.style.borderColor = 'rgba(255,107,0,.25)'
+            e.currentTarget.style.color = '#ff6b00'
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.background = 'rgba(255,255,255,.05)'
-            e.currentTarget.style.color = 'rgba(255,255,255,.5)'
+            e.currentTarget.style.background = 'rgba(169,138,125,.07)'
+            e.currentTarget.style.borderColor = 'rgba(169,138,125,.14)'
+            e.currentTarget.style.color = '#a98a7d'
           }}
-        >✕ Clear</button>
+        >
+          <X size={12} />
+          Clear
+        </button>
       </div>
 
       {items.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '72px 20px' }}>
-          <div style={{ fontSize: '3rem', marginBottom: 18, opacity: 0.2 }}>𝄞</div>
+          <div style={{ fontSize: '3rem', marginBottom: 18, opacity: 0.15 }}>𝄞</div>
           <div style={{
             fontFamily: FONT.display,
             fontSize: FS.hero,
-            color: 'rgba(255,255,255,.25)',
+            color: 'rgba(169,138,125,.25)',
             marginBottom: 10,
           }}>No results</div>
           <div style={{
             fontFamily: FONT.body,
             fontSize: FS.detail,
-            color: 'rgba(255,255,255,.22)',
+            color: 'rgba(169,138,125,.2)',
             fontStyle: 'italic',
           }}>Try searching for a scale name, technique, or chord type</div>
         </div>
       ) : (
-        <div style={{ columns: '340px', columnGap: 14 }}>
+        <div style={{ columns: '340px', columnGap: 12 }}>
           {items.map(item => (
-            <div key={item.id} style={{ breakInside: 'avoid', marginBottom: 14 }}>
+            <div key={item.id} style={{ breakInside: 'avoid', marginBottom: 12 }}>
               <Card
                 item={item}
                 open={openIds.has(item.id)}
