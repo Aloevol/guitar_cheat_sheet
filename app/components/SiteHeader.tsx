@@ -103,6 +103,25 @@ export default function SiteHeader() {
             ))}
             <span style={{ width: 1, height: 16, background: 'rgba(169,138,125,.15)', margin: '0 8px' }} />
             <Link
+              href="/guitarfx"
+              style={{
+                fontFamily: "'Inter', system-ui, sans-serif",
+                fontSize: '0.62rem',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                color: 'rgba(169,138,125,.45)',
+                textDecoration: 'none',
+                padding: '6px 10px',
+                borderRadius: 4,
+                transition: 'color .15s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color = '#ff6b00' }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(169,138,125,.45)' }}
+            >
+              GuitarFX
+            </Link>
+            <Link
               href="/about"
               style={{
                 fontFamily: "'Inter', system-ui, sans-serif",
@@ -214,6 +233,14 @@ export default function SiteHeader() {
             </Link>
           ))}
           <div className="gcs-mobile-divider" />
+          <Link
+            href="/guitarfx"
+            className="gcs-mobile-link"
+            style={{ borderLeftColor: '#f59e0b' }}
+            onClick={() => setOpen(false)}
+          >
+            GuitarFX
+          </Link>
           <Link
             href="/about"
             className="gcs-mobile-link"

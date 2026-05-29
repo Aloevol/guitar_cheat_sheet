@@ -93,6 +93,7 @@ export default function SiteFooter() {
               <nav aria-label="Site pages">
                 {[
                   { href: '/',        label: 'Home' },
+                  { href: '/guitarfx', label: 'GuitarFX Studio' },
                   { href: '/about',   label: 'About' },
                   { href: '/contact', label: 'Contact' },
                   { href: '/privacy', label: 'Privacy Policy' },
